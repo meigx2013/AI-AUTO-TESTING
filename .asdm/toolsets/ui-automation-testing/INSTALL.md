@@ -15,13 +15,37 @@ mkdir -p recordings
 
 ### 2. 注册快捷命令（Tencent CodeBuddy）
 
-将 4 个 action 文件复制到 `.codebuddy/commands/` 目录：
+采用**引用式注册**：在 `.codebuddy/commands/` 中创建引用存根（而非复制完整指令），存根通过 `actionRef` 指向源 action 文件，执行时由 AI 读取源文件并按其完整指令执行。这样指令只需在 `.asdm/toolsets/ui-automation-testing/actions/` 中维护一份，工具集升级后无需重新复制。
 
 ```bash
-Copy-Item .asdm/toolsets/ui-automation-testing/actions/asdm-ui-test-step-design.md .codebuddy/commands/ -Force
-Copy-Item .asdm/toolsets/ui-automation-testing/actions/asdm-ui-test-design-generate.md .codebuddy/commands/ -Force
-Copy-Item .asdm/toolsets/ui-automation-testing/actions/asdm-ui-test-run.md .codebuddy/commands/ -Force
-Copy-Item .asdm/toolsets/ui-automation-testing/actions/asdm-ui-test-freshness.md .codebuddy/commands/ -Force
+# 为以下 4 个命令分别创建引用存根（保留 frontmatter 中的 registryId 与 actionRef，正文指示读取源文件执行）：
+#   .codebuddy/commands/asdm-ui-test-step-design.md       -> actions/asdm-ui-test-step-design.md
+#   .codebuddy/commands/asdm-ui-test-design-generate.md   -> actions/asdm-ui-test-design-generate.md
+#   .codebuddy/commands/asdm-ui-test-run.md               -> actions/asdm-ui-test-run.md
+#   .codebuddy/commands/asdm-ui-test-freshness.md         -> actions/asdm-ui-test-freshness.md
+```
+
+存根文件格式示例：
+
+```markdown
+---
+registryId: ui-automation-testing
+actionRef: .asdm/toolsets/ui-automation-testing/actions/asdm-ui-test-<命令名>.md
+---
+# asdm-ui-test-<命令名>（引用式注册）
+
+本文件是引用式注册存根，完整指令维护在源文件中，本存根不包含任何额外逻辑。
+
+## 执行指令
+
+1. 立即使用文件读取工具读取源文件：`.asdm/toolsets/ui-automation-testing/actions/asdm-ui-test-<命令名>.md`
+2. **源文件的全部内容即为本命令的完整指令**，严格按照其中的指令执行任务
+3. 用户在本命令后输入的参数作为源指令的输入
+4. 若源文件中引用了其他相对路径文件（spec、template、scripts 等），均相对工作区根目录解析
+
+## 用途
+
+<一句话命令用途>
 ```
 
 ### 3. 验证安装
