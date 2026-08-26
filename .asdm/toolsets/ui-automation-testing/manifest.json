@@ -1,0 +1,14 @@
+{
+  "guid": "eab51b77-cdbe-4d25-8773-a1e52565fc97",
+  "registry_id": "ui-automation-testing",
+  "name": "UI Automation Testing Toolset",
+  "description": "面向 Web 应用的 UI 自动化测试工具集，按照《外网AI自动化测试方案 v1.1》实现「人工录制脚本 + AI 负责转换与保鲜」路线：以 Chrome Dev Tools Recorder 录制 json 为唯一脚本来源，AI 转换为 agent-browser 主产物脚本（Playwright 为降级产物），并支持执行报告与定时保鲜巡检",
+  "version": "0.1.0",
+  "configType": "toolset",
+  "commands": [
+    "asdm-ui-test-step-design",
+    "asdm-ui-test-design-generate",
+    "asdm-ui-test-run",
+    "asdm-ui-test-freshness"
+  ]
+}

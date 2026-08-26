@@ -1,0 +1,40 @@
+# annotations.json 格式模板
+
+annotations.json 为步骤自然语言标注文件，供保鲜指令自愈使用。每个步骤生成中文语义描述。
+
+```json
+{
+  "caseName": "<用例名称>",
+  "generatedAt": "<YYYY-MM-DD HH:mm:ss>",
+  "scenarios": {
+    "<场景编号>": {
+      "name": "<场景名称>",
+      "sourceRecording": "recordings/<模块>/<录制文件名>.json",
+      "scripts": {
+        "agentBrowser": "<模块>-<场景简称>.sh",
+        "playwright": "<模块>-<场景简称>.js"
+      },
+      "steps": {
+        "step-1": {
+          "description": "<中文描述：做什么、目标元素>",
+          "expectedResult": "<预期结果；断言步骤必填>",
+          "recordingStepIndex": <对应录制 json steps 数组下标>,
+          "isAssertion": false
+        },
+        "assert-1": {
+          "description": "<断言描述>",
+          "expectedResult": "<期望文本/状态>",
+          "recordingStepIndex": <下标>,
+          "isAssertion": true
+        }
+      }
+    }
+  }
+}
+```
+
+## 要求
+
+- stepId 与脚本中的 `@step` 注释一一对应
+- `description` 使用中文，描述业务语义而非技术操作
+- 断言步骤必须填写 `expectedResult`，且 `isAssertion: true`

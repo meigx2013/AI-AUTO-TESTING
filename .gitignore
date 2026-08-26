@@ -1,0 +1,63 @@
+## ignore log files and folders
+*.log
+logs/
+
+## artifacts storage
+deploy/artifacts/
+
+.codebuddy
+.vscode
+.idea/
+*.iml
+*.swp
+*.swo
+
+## Node modules
+node_modules/
+dist/
+.next/
+out/
+build/
+
+## Environment files
+.env
+.env.local
+.env.*.local
+
+# Track the web app feature flags env file
+!asdm-admin-web/.env
+
+## OS files
+.DS_Store
+Thumbs.db
+
+## Build outputs
+*.class
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+
+## Temporary files
+*.tmp
+*.temp
+.cache/
+
+## MySQL runtime data
+deploy/mysql/data/
+
+
+package-lock.json
+
+## Cursor IDE
+.cursor/
+
+## Feishu spec docs (local-only)
+docs/feishu-user-permission-lifecycle-spec.md
+
+## Local docs
+docs/
+
