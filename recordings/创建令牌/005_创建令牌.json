@@ -1,0 +1,259 @@
+{
+    "title": "005_创建令牌",
+    "steps": [
+        {
+            "type": "setViewport",
+            "width": 1707,
+            "height": 745,
+            "deviceScaleFactor": 1,
+            "isMobile": false,
+            "hasTouch": false,
+            "isLandscape": false
+        },
+        {
+            "type": "navigate",
+            "url": "https://platform-dt01.asdm.ai/projects",
+            "assertedEvents": [
+                {
+                    "type": "navigation",
+                    "url": "https://platform-dt01.asdm.ai/projects",
+                    "title": "ASDM | 平台概览"
+                }
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/首页"
+                ],
+                [
+                    "div.min-h-screen > div.flex nav a"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/header/div/div[1]/nav/div[1]/a"
+                ],
+                [
+                    "pierce/div.min-h-screen > div.flex nav a"
+                ],
+                [
+                    "text/首页"
+                ]
+            ],
+            "offsetY": 12,
+            "offsetX": 12.666656494140625
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/平台级设置",
+                    "aria/[role=\"generic\"]"
+                ],
+                [
+                    "div.absolute > a > span"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[1]/aside/div[2]/a/span"
+                ],
+                [
+                    "pierce/div.absolute > a > span"
+                ],
+                [
+                    "text/平台级设置"
+                ]
+            ],
+            "offsetY": 5.6666259765625,
+            "offsetX": 38
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/A Admin Super",
+                    "aria/[role=\"graphics-symbol\"]"
+                ],
+                [
+                    "div.hidden > div.relative path"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/header/div/div[2]/div[2]/button/svg/path"
+                ],
+                [
+                    "pierce/div.hidden > div.relative path"
+                ]
+            ],
+            "offsetY": 3.34375,
+            "offsetX": 4.3541259765625
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/访问令牌"
+                ],
+                [
+                    "li:nth-of-type(3) > a"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/header/div/div[2]/div[2]/div/ul/li[3]/a"
+                ],
+                [
+                    "pierce/li:nth-of-type(3) > a"
+                ],
+                [
+                    "text/访问令牌"
+                ]
+            ],
+            "offsetY": 21.333328247070312,
+            "offsetX": 80
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/创建令牌"
+                ],
+                [
+                    "div.bg-gray-100 > div > button"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[2]/div[2]/div/div[1]/div/button"
+                ],
+                [
+                    "pierce/div.bg-gray-100 > div > button"
+                ],
+                [
+                    "text/创建令牌"
+                ]
+            ],
+            "offsetY": 18,
+            "offsetX": 43.729156494140625
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/cli-token"
+                ],
+                [
+                    "div:nth-of-type(1) > input"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[2]/div[2]/div/div[4]/div[2]/div[2]/div[1]/input"
+                ],
+                [
+                    "pierce/div:nth-of-type(1) > input"
+                ]
+            ],
+            "offsetY": 13.33331298828125,
+            "offsetX": 60.6666259765625
+        },
+        {
+            "type": "change",
+            "value": "asdm-pat",
+            "selectors": [
+                [
+                    "aria/cli-token"
+                ],
+                [
+                    "div:nth-of-type(1) > input"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[2]/div[2]/div/div[4]/div[2]/div[2]/div[1]/input"
+                ],
+                [
+                    "pierce/div:nth-of-type(1) > input"
+                ]
+            ],
+            "target": "main"
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/[role=\"dialog\"]",
+                    "aria/[role=\"combobox\"]"
+                ],
+                [
+                    "div.fixed select"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[2]/div[2]/div/div[4]/div[2]/div[2]/div[2]/select"
+                ],
+                [
+                    "pierce/div.fixed select"
+                ]
+            ],
+            "offsetY": 16,
+            "offsetX": 68.6666259765625
+        },
+        {
+            "type": "change",
+            "value": "60",
+            "selectors": [
+                [
+                    "aria/[role=\"dialog\"]",
+                    "aria/[role=\"combobox\"]"
+                ],
+                [
+                    "div.fixed select"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[2]/div[2]/div/div[4]/div[2]/div[2]/div[2]/select"
+                ],
+                [
+                    "pierce/div.fixed select"
+                ]
+            ],
+            "target": "main"
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/创建"
+                ],
+                [
+                    "button.bg-brand-600"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[2]/div[2]/div/div[4]/div[2]/div[3]/button[2]"
+                ],
+                [
+                    "pierce/button.bg-brand-600"
+                ]
+            ],
+            "offsetY": 20.33331298828125,
+            "offsetX": 39
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/复制"
+                ],
+                [
+                    "button.bg-brand-600"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[2]/div[2]/div/div[4]/div[2]/div[2]/button[2]"
+                ],
+                [
+                    "pierce/button.bg-brand-600"
+                ]
+            ],
+            "offsetY": 18.33331298828125,
+            "offsetX": 33
+        }
+    ]
+}

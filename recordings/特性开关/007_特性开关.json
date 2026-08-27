@@ -1,0 +1,611 @@
+{
+    "title": "007_特性开关",
+    "steps": [
+        {
+            "type": "setViewport",
+            "width": 1707,
+            "height": 766,
+            "deviceScaleFactor": 1,
+            "isMobile": false,
+            "hasTouch": false,
+            "isLandscape": false
+        },
+        {
+            "type": "navigate",
+            "url": "https://platform-dt01.asdm.ai/projects",
+            "assertedEvents": [
+                {
+                    "type": "navigation",
+                    "url": "https://platform-dt01.asdm.ai/projects",
+                    "title": "ASDM | 平台概览"
+                }
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/首页"
+                ],
+                [
+                    "div.min-h-screen > div.flex nav a"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/header/div/div[1]/nav/div[1]/a"
+                ],
+                [
+                    "pierce/div.min-h-screen > div.flex nav a"
+                ],
+                [
+                    "text/首页"
+                ]
+            ],
+            "offsetY": 11,
+            "offsetX": 15.666656494140625
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/平台级设置",
+                    "aria/[role=\"generic\"]"
+                ],
+                [
+                    "div.absolute > a > span"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[1]/aside/div[2]/a/span"
+                ],
+                [
+                    "pierce/div.absolute > a > span"
+                ],
+                [
+                    "text/平台级设置"
+                ]
+            ],
+            "offsetY": 10,
+            "offsetX": 30
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/特性开关"
+                ],
+                [
+                    "button:nth-of-type(5)"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[2]/div[1]/button[5]"
+                ],
+                [
+                    "pierce/button:nth-of-type(5)"
+                ],
+                [
+                    "text/特性开关"
+                ]
+            ],
+            "offsetY": 14.666656494140625,
+            "offsetX": 46.75
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "select"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[3]/div[2]/div[1]/select"
+                ],
+                [
+                    "pierce/select"
+                ]
+            ],
+            "offsetY": 14.33331298828125,
+            "offsetX": 41.33331298828125
+        },
+        {
+            "type": "change",
+            "value": "50",
+            "selectors": [
+                [
+                    "select"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[3]/div[2]/div[1]/select"
+                ],
+                [
+                    "pierce/select"
+                ]
+            ],
+            "target": "main"
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "tr:nth-of-type(4)"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[3]/div[1]/table/tbody/tr[4]"
+                ],
+                [
+                    "pierce/tr:nth-of-type(4)"
+                ],
+                [
+                    "text/4hide_digidev_icon控制是否隐藏"
+                ]
+            ],
+            "offsetY": 26.6666259765625,
+            "offsetX": 405.33331298828125,
+            "duration": 415.1999999284744
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "tr:nth-of-type(4) button"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[3]/div[1]/table/tbody/tr[4]/td[5]/div/button"
+                ],
+                [
+                    "pierce/tr:nth-of-type(4) button"
+                ]
+            ],
+            "offsetY": 9.83331298828125,
+            "offsetX": 19.6666259765625
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "label:nth-of-type(1) > span.flex-1"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[4]/div[2]/div[2]/div[3]/div/label[1]/span[2]"
+                ],
+                [
+                    "pierce/label:nth-of-type(1) > span.flex-1"
+                ]
+            ],
+            "offsetY": 8.666656494140625,
+            "offsetX": 59.33331298828125
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/保存"
+                ],
+                [
+                    "button.text-white"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[4]/div[2]/div[3]/button[2]"
+                ],
+                [
+                    "pierce/button.text-white"
+                ],
+                [
+                    "text/保存"
+                ]
+            ],
+            "offsetY": 15.33331298828125,
+            "offsetX": 29.6666259765625
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "tr:nth-of-type(4)"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[3]/div[1]/table/tbody/tr[4]"
+                ],
+                [
+                    "pierce/tr:nth-of-type(4)"
+                ],
+                [
+                    "text/4hide_digidev_icon控制是否隐藏"
+                ]
+            ],
+            "offsetY": 41.666656494140625,
+            "offsetX": 904.3333129882812,
+            "duration": 824.1000000238419
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "tr:nth-of-type(19) button"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[3]/div[1]/table/tbody/tr[19]/td[5]/div/button"
+                ],
+                [
+                    "pierce/tr:nth-of-type(19) button"
+                ]
+            ],
+            "offsetY": 8.83331298828125,
+            "offsetX": 13.6666259765625
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "label:nth-of-type(1) > span.flex-1"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[4]/div[2]/div[2]/div[3]/div/label[1]/span[2]"
+                ],
+                [
+                    "pierce/label:nth-of-type(1) > span.flex-1"
+                ]
+            ],
+            "offsetY": 0.666656494140625,
+            "offsetX": 206.33331298828125
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/保存"
+                ],
+                [
+                    "button.text-white"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[4]/div[2]/div[3]/button[2]"
+                ],
+                [
+                    "pierce/button.text-white"
+                ],
+                [
+                    "text/保存"
+                ]
+            ],
+            "offsetY": 12.33331298828125,
+            "offsetX": 19.6666259765625
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "tr:nth-of-type(19)"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[3]/div[1]/table/tbody/tr[19]"
+                ],
+                [
+                    "pierce/tr:nth-of-type(19)"
+                ],
+                [
+                    "text/19hide_admin_resource_management控制服务器设置/组织设置中资源管理是否隐藏全量开放编辑"
+                ]
+            ],
+            "offsetY": 20.6666259765625,
+            "offsetX": 767.3333129882812,
+            "duration": 1132.6000000238419
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "tr:nth-of-type(23)"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[3]/div[1]/table/tbody/tr[23]"
+                ],
+                [
+                    "pierce/tr:nth-of-type(23)"
+                ],
+                [
+                    "text/23hide_artifacts_menu控制制品管理模块菜单的隐藏与显示全量开放编辑"
+                ]
+            ],
+            "offsetY": 22,
+            "offsetX": 581.3333129882812,
+            "duration": 841.2000000476837
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "tr:nth-of-type(24) > td:nth-of-type(4)"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[3]/div[1]/table/tbody/tr[24]/td[4]"
+                ],
+                [
+                    "pierce/tr:nth-of-type(24) > td:nth-of-type(4)"
+                ]
+            ],
+            "offsetY": 31.33331298828125,
+            "offsetX": 101.833251953125
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "tr:nth-of-type(24) button"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[3]/div[1]/table/tbody/tr[24]/td[5]/div/button"
+                ],
+                [
+                    "pierce/tr:nth-of-type(24) button"
+                ]
+            ],
+            "offsetY": 7.5,
+            "offsetX": 21.6666259765625
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "label:nth-of-type(1) > span.flex-1"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[4]/div[2]/div[2]/div[3]/div/label[1]/span[2]"
+                ],
+                [
+                    "pierce/label:nth-of-type(1) > span.flex-1"
+                ]
+            ],
+            "offsetY": 10.666656494140625,
+            "offsetX": 64.33331298828125
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/保存"
+                ],
+                [
+                    "button.text-white"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[4]/div[2]/div[3]/button[2]"
+                ],
+                [
+                    "pierce/button.text-white"
+                ],
+                [
+                    "text/保存"
+                ]
+            ],
+            "offsetY": 12.33331298828125,
+            "offsetX": 27.6666259765625
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "tr:nth-of-type(33) button"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[3]/div[1]/table/tbody/tr[33]/td[5]/div/button"
+                ],
+                [
+                    "pierce/tr:nth-of-type(33) button"
+                ]
+            ],
+            "offsetY": 7.83331298828125,
+            "offsetX": 15.6666259765625
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "label:nth-of-type(1) > span.flex-1"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[4]/div[2]/div[2]/div[3]/div/label[1]/span[2]"
+                ],
+                [
+                    "pierce/label:nth-of-type(1) > span.flex-1"
+                ]
+            ],
+            "offsetY": 0.666656494140625,
+            "offsetX": 65.33331298828125
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/保存"
+                ],
+                [
+                    "button.text-white"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[4]/div[2]/div[3]/button[2]"
+                ],
+                [
+                    "pierce/button.text-white"
+                ],
+                [
+                    "text/保存"
+                ]
+            ],
+            "offsetY": 19.33331298828125,
+            "offsetX": 35.6666259765625
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "tr:nth-of-type(34) button"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[3]/div[1]/table/tbody/tr[34]/td[5]/div/button"
+                ],
+                [
+                    "pierce/tr:nth-of-type(34) button"
+                ]
+            ],
+            "offsetY": 11.1666259765625,
+            "offsetX": 17.6666259765625
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "label:nth-of-type(1) > span.flex-1"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[4]/div[2]/div[2]/div[3]/div/label[1]/span[2]"
+                ],
+                [
+                    "pierce/label:nth-of-type(1) > span.flex-1"
+                ]
+            ],
+            "offsetY": 4.666656494140625,
+            "offsetX": 63.33331298828125
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/保存"
+                ],
+                [
+                    "button.text-white"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[4]/div[2]/div[3]/button[2]"
+                ],
+                [
+                    "pierce/button.text-white"
+                ],
+                [
+                    "text/保存"
+                ]
+            ],
+            "offsetY": 22.33331298828125,
+            "offsetX": 28.6666259765625
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "tr:nth-of-type(35) button"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[3]/div[1]/table/tbody/tr[35]/td[5]/div/button"
+                ],
+                [
+                    "pierce/tr:nth-of-type(35) button"
+                ]
+            ],
+            "offsetY": 10.5,
+            "offsetX": 15.6666259765625
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/保存"
+                ],
+                [
+                    "button.text-white"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[4]/div[2]/div[3]/button[2]"
+                ],
+                [
+                    "pierce/button.text-white"
+                ],
+                [
+                    "text/保存"
+                ]
+            ],
+            "offsetY": 20.33331298828125,
+            "offsetX": 30.6666259765625
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "tr:nth-of-type(35) button"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[3]/div[1]/table/tbody/tr[35]/td[5]/div/button"
+                ],
+                [
+                    "pierce/tr:nth-of-type(35) button"
+                ]
+            ],
+            "offsetY": 7.5,
+            "offsetX": 15.6666259765625
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "label:nth-of-type(1) > span.flex-1"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[4]/div[2]/div[2]/div[3]/div/label[1]/span[2]"
+                ],
+                [
+                    "pierce/label:nth-of-type(1) > span.flex-1"
+                ]
+            ],
+            "offsetY": 18.666656494140625,
+            "offsetX": 107.33331298828125
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/保存"
+                ],
+                [
+                    "button.text-white"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[4]/div[2]/div[3]/button[2]"
+                ],
+                [
+                    "pierce/button.text-white"
+                ],
+                [
+                    "text/保存"
+                ]
+            ],
+            "offsetY": 21.33331298828125,
+            "offsetX": 32.6666259765625
+        }
+    ]
+}

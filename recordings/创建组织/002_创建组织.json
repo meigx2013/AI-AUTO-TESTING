@@ -1,0 +1,242 @@
+{
+    "title": "002_创建组织",
+    "steps": [
+        {
+            "type": "setViewport",
+            "width": 1707,
+            "height": 764,
+            "deviceScaleFactor": 1,
+            "isMobile": false,
+            "hasTouch": false,
+            "isLandscape": false
+        },
+        {
+            "type": "navigate",
+            "url": "https://platform-dt01.asdm.ai/projects",
+            "assertedEvents": [
+                {
+                    "type": "navigation",
+                    "url": "https://platform-dt01.asdm.ai/projects",
+                    "title": "ASDM | 平台概览"
+                }
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/首页"
+                ],
+                [
+                    "div.min-h-screen > div.flex nav a"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/header/div/div[1]/nav/div[1]/a"
+                ],
+                [
+                    "pierce/div.min-h-screen > div.flex nav a"
+                ],
+                [
+                    "text/首页"
+                ]
+            ],
+            "offsetY": 9,
+            "offsetX": 11.666656494140625
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/平台级设置",
+                    "aria/[role=\"generic\"]"
+                ],
+                [
+                    "div.absolute > a > span"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[1]/aside/div[2]/a/span"
+                ],
+                [
+                    "pierce/div.absolute > a > span"
+                ],
+                [
+                    "text/平台级设置"
+                ]
+            ],
+            "offsetY": 5,
+            "offsetX": 34
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/组织"
+                ],
+                [
+                    "div.min-h-screen > div.flex > div button:nth-of-type(2)"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[2]/div[1]/button[2]"
+                ],
+                [
+                    "pierce/div.min-h-screen > div.flex > div button:nth-of-type(2)"
+                ]
+            ],
+            "offsetY": 16.666656494140625,
+            "offsetX": 20
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "div.space-y-2 > div.flex button.bg-brand-600"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div/div[1]/div[1]/div[1]/div[2]/button[1]"
+                ],
+                [
+                    "pierce/div.space-y-2 > div.flex button.bg-brand-600"
+                ]
+            ],
+            "offsetY": 8.333328247070312,
+            "offsetX": 53.33331298828125
+        },
+        {
+            "type": "keyUp",
+            "key": "Tab",
+            "target": "main"
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/请输入组织名称"
+                ],
+                [
+                    "div.fixed div:nth-of-type(1) > input"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[3]/div[2]/form/div[1]/input"
+                ],
+                [
+                    "pierce/div.fixed div:nth-of-type(1) > input"
+                ]
+            ],
+            "offsetY": 10.33331298828125,
+            "offsetX": 105.6666259765625
+        },
+        {
+            "type": "change",
+            "value": "金融业务板块",
+            "selectors": [
+                [
+                    "aria/请输入组织名称"
+                ],
+                [
+                    "div.fixed div:nth-of-type(1) > input"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[3]/div[2]/form/div[1]/input"
+                ],
+                [
+                    "pierce/div.fixed div:nth-of-type(1) > input"
+                ]
+            ],
+            "target": "main"
+        },
+        {
+            "type": "keyDown",
+            "target": "main",
+            "key": "Alt"
+        },
+        {
+            "type": "keyUp",
+            "key": "Tab",
+            "target": "main"
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/选填"
+                ],
+                [
+                    "form > input"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[3]/div[2]/form/input"
+                ],
+                [
+                    "pierce/form > input"
+                ]
+            ],
+            "offsetY": 21,
+            "offsetX": 109.6666259765625
+        },
+        {
+            "type": "change",
+            "value": "FinancialBusiness",
+            "selectors": [
+                [
+                    "aria/选填"
+                ],
+                [
+                    "form > input"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[3]/div[2]/form/input"
+                ],
+                [
+                    "pierce/form > input"
+                ]
+            ],
+            "target": "main"
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "div.fixed div.flex"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[3]/div[2]/form/div[2]"
+                ],
+                [
+                    "pierce/div.fixed div.flex"
+                ],
+                [
+                    "text/取消创建"
+                ]
+            ],
+            "offsetY": 16.666656494140625,
+            "offsetX": 177.6666259765625
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/创建"
+                ],
+                [
+                    "div.fixed button.bg-brand-600"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[3]/div[2]/form/div[2]/button[2]"
+                ],
+                [
+                    "pierce/div.fixed button.bg-brand-600"
+                ]
+            ],
+            "offsetY": 19.666656494140625,
+            "offsetX": 37
+        }
+    ]
+}

@@ -1,0 +1,622 @@
+{
+    "title": "004_创建用户",
+    "steps": [
+        {
+            "type": "setViewport",
+            "width": 1707,
+            "height": 774,
+            "deviceScaleFactor": 1,
+            "isMobile": false,
+            "hasTouch": false,
+            "isLandscape": false
+        },
+        {
+            "type": "navigate",
+            "url": "https://platform-dt01.asdm.ai/projects",
+            "assertedEvents": [
+                {
+                    "type": "navigation",
+                    "url": "https://platform-dt01.asdm.ai/projects",
+                    "title": "ASDM | 平台概览"
+                }
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/首页"
+                ],
+                [
+                    "div.min-h-screen > div.flex nav a"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/header/div/div[1]/nav/div[1]/a"
+                ],
+                [
+                    "pierce/div.min-h-screen > div.flex nav a"
+                ],
+                [
+                    "text/首页"
+                ]
+            ],
+            "offsetY": 15,
+            "offsetX": 19.666656494140625
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/平台级设置",
+                    "aria/[role=\"generic\"]"
+                ],
+                [
+                    "div.absolute > a > span"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[1]/aside/div[2]/a/span"
+                ],
+                [
+                    "pierce/div.absolute > a > span"
+                ],
+                [
+                    "text/平台级设置"
+                ]
+            ],
+            "offsetY": 10,
+            "offsetX": 27
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/用户"
+                ],
+                [
+                    "button:nth-of-type(3)"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[2]/div[1]/button[3]"
+                ],
+                [
+                    "pierce/button:nth-of-type(3)"
+                ],
+                [
+                    "text/用户"
+                ]
+            ],
+            "offsetY": 16.666656494140625,
+            "offsetX": 24
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/+ 创建用户"
+                ],
+                [
+                    "div.shrink-0 > div:nth-of-type(1) > button"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[1]/div[1]/button"
+                ],
+                [
+                    "pierce/div.shrink-0 > div:nth-of-type(1) > button"
+                ],
+                [
+                    "text/+ 创建用户"
+                ]
+            ],
+            "offsetY": 18,
+            "offsetX": 48.7916259765625
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/新用户邮箱（必填）"
+                ],
+                [
+                    "#create-user-email"
+                ],
+                [
+                    "xpath///*[@id=\"create-user-email\"]"
+                ],
+                [
+                    "pierce/#create-user-email"
+                ]
+            ],
+            "offsetY": 14.33331298828125,
+            "offsetX": 109.6666259765625
+        },
+        {
+            "type": "change",
+            "value": "test03@",
+            "selectors": [
+                [
+                    "aria/新用户邮箱（必填）"
+                ],
+                [
+                    "#create-user-email"
+                ],
+                [
+                    "xpath///*[@id=\"create-user-email\"]"
+                ],
+                [
+                    "pierce/#create-user-email"
+                ]
+            ],
+            "target": "main"
+        },
+        {
+            "type": "keyUp",
+            "key": "2",
+            "target": "main"
+        },
+        {
+            "type": "change",
+            "value": "test03@asdm.ai",
+            "selectors": [
+                [
+                    "aria/新用户邮箱（必填）"
+                ],
+                [
+                    "#create-user-email"
+                ],
+                [
+                    "xpath///*[@id=\"create-user-email\"]"
+                ],
+                [
+                    "pierce/#create-user-email"
+                ]
+            ],
+            "target": "main"
+        },
+        {
+            "type": "keyDown",
+            "target": "main",
+            "key": "Tab"
+        },
+        {
+            "type": "keyUp",
+            "key": "Tab",
+            "target": "main"
+        },
+        {
+            "type": "change",
+            "value": "admin@",
+            "selectors": [
+                [
+                    "aria/初始密码（必填）"
+                ],
+                [
+                    "#create-user-password"
+                ],
+                [
+                    "xpath///*[@id=\"create-user-password\"]"
+                ],
+                [
+                    "pierce/#create-user-password"
+                ]
+            ],
+            "target": "main"
+        },
+        {
+            "type": "keyUp",
+            "key": "2",
+            "target": "main"
+        },
+        {
+            "type": "change",
+            "value": "admin@2026",
+            "selectors": [
+                [
+                    "aria/初始密码（必填）"
+                ],
+                [
+                    "#create-user-password"
+                ],
+                [
+                    "xpath///*[@id=\"create-user-password\"]"
+                ],
+                [
+                    "pierce/#create-user-password"
+                ]
+            ],
+            "target": "main"
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/姓（必填）"
+                ],
+                [
+                    "#create-user-last-name"
+                ],
+                [
+                    "xpath///*[@id=\"create-user-last-name\"]"
+                ],
+                [
+                    "pierce/#create-user-last-name"
+                ]
+            ],
+            "offsetY": 17,
+            "offsetX": 65.6666259765625
+        },
+        {
+            "type": "keyDown",
+            "target": "main",
+            "key": "Shift"
+        },
+        {
+            "type": "keyUp",
+            "key": "Shift",
+            "target": "main"
+        },
+        {
+            "type": "change",
+            "value": "c",
+            "selectors": [
+                [
+                    "aria/姓（必填）"
+                ],
+                [
+                    "#create-user-last-name"
+                ],
+                [
+                    "xpath///*[@id=\"create-user-last-name\"]"
+                ],
+                [
+                    "pierce/#create-user-last-name"
+                ]
+            ],
+            "target": "main"
+        },
+        {
+            "type": "keyUp",
+            "key": "c",
+            "target": "main"
+        },
+        {
+            "type": "change",
+            "value": "ce",
+            "selectors": [
+                [
+                    "aria/姓（必填）"
+                ],
+                [
+                    "#create-user-last-name"
+                ],
+                [
+                    "xpath///*[@id=\"create-user-last-name\"]"
+                ],
+                [
+                    "pierce/#create-user-last-name"
+                ]
+            ],
+            "target": "main"
+        },
+        {
+            "type": "keyUp",
+            "key": "e",
+            "target": "main"
+        },
+        {
+            "type": "change",
+            "value": "ces",
+            "selectors": [
+                [
+                    "aria/姓（必填）"
+                ],
+                [
+                    "#create-user-last-name"
+                ],
+                [
+                    "xpath///*[@id=\"create-user-last-name\"]"
+                ],
+                [
+                    "pierce/#create-user-last-name"
+                ]
+            ],
+            "target": "main"
+        },
+        {
+            "type": "keyUp",
+            "key": "s",
+            "target": "main"
+        },
+        {
+            "type": "change",
+            "value": "测试",
+            "selectors": [
+                [
+                    "aria/姓（必填）"
+                ],
+                [
+                    "#create-user-last-name"
+                ],
+                [
+                    "xpath///*[@id=\"create-user-last-name\"]"
+                ],
+                [
+                    "pierce/#create-user-last-name"
+                ]
+            ],
+            "target": "main"
+        },
+        {
+            "type": "keyUp",
+            "key": " ",
+            "target": "main"
+        },
+        {
+            "type": "keyDown",
+            "target": "main",
+            "key": "Tab"
+        },
+        {
+            "type": "keyUp",
+            "key": "Tab",
+            "target": "main"
+        },
+        {
+            "type": "change",
+            "value": "s",
+            "selectors": [
+                [
+                    "aria/名（必填）"
+                ],
+                [
+                    "#create-user-first-name"
+                ],
+                [
+                    "xpath///*[@id=\"create-user-first-name\"]"
+                ],
+                [
+                    "pierce/#create-user-first-name"
+                ]
+            ],
+            "target": "main"
+        },
+        {
+            "type": "keyUp",
+            "key": "s",
+            "target": "main"
+        },
+        {
+            "type": "change",
+            "value": "sa",
+            "selectors": [
+                [
+                    "aria/名（必填）"
+                ],
+                [
+                    "#create-user-first-name"
+                ],
+                [
+                    "xpath///*[@id=\"create-user-first-name\"]"
+                ],
+                [
+                    "pierce/#create-user-first-name"
+                ]
+            ],
+            "target": "main"
+        },
+        {
+            "type": "keyUp",
+            "key": "a",
+            "target": "main"
+        },
+        {
+            "type": "change",
+            "value": "san",
+            "selectors": [
+                [
+                    "aria/名（必填）"
+                ],
+                [
+                    "#create-user-first-name"
+                ],
+                [
+                    "xpath///*[@id=\"create-user-first-name\"]"
+                ],
+                [
+                    "pierce/#create-user-first-name"
+                ]
+            ],
+            "target": "main"
+        },
+        {
+            "type": "keyUp",
+            "key": "n",
+            "target": "main"
+        },
+        {
+            "type": "change",
+            "value": "三",
+            "selectors": [
+                [
+                    "aria/名（必填）"
+                ],
+                [
+                    "#create-user-first-name"
+                ],
+                [
+                    "xpath///*[@id=\"create-user-first-name\"]"
+                ],
+                [
+                    "pierce/#create-user-first-name"
+                ]
+            ],
+            "target": "main"
+        },
+        {
+            "type": "keyUp",
+            "key": " ",
+            "target": "main"
+        },
+        {
+            "type": "keyDown",
+            "target": "main",
+            "key": "Shift"
+        },
+        {
+            "type": "keyUp",
+            "key": "Shift",
+            "target": "main"
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "form > div.border-gray-200 > div"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[3]/div[2]/form/div[6]/div"
+                ],
+                [
+                    "pierce/form > div.border-gray-200 > div"
+                ],
+                [
+                    "text/角色映射（可选）新增角色映射"
+                ]
+            ],
+            "offsetY": 15,
+            "offsetX": 331
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/新增角色映射"
+                ],
+                [
+                    "form button"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[3]/div[2]/form/div[6]/div/button"
+                ],
+                [
+                    "pierce/form button"
+                ],
+                [
+                    "text/新增角色映射"
+                ]
+            ],
+            "offsetY": 13,
+            "offsetX": 47
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "form > div.border-gray-200 select:nth-of-type(1)"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[3]/div[2]/form/div[6]/div[2]/div[2]/select[1]"
+                ],
+                [
+                    "pierce/form > div.border-gray-200 select:nth-of-type(1)"
+                ],
+                [
+                    "text/readonly-user"
+                ]
+            ],
+            "offsetY": 10.6666259765625,
+            "offsetX": 68.33331298828125
+        },
+        {
+            "type": "change",
+            "value": "org-admin",
+            "selectors": [
+                [
+                    "form > div.border-gray-200 select:nth-of-type(1)"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[3]/div[2]/form/div[6]/div[2]/div[2]/select[1]"
+                ],
+                [
+                    "pierce/form > div.border-gray-200 select:nth-of-type(1)"
+                ],
+                [
+                    "text/readonly-user"
+                ]
+            ],
+            "target": "main"
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/未绑定组织",
+                    "aria/[role=\"generic\"]"
+                ],
+                [
+                    "form > div.border-gray-200 span"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[3]/div[2]/form/div[6]/div[2]/div[2]/div/div/button/span"
+                ],
+                [
+                    "pierce/form > div.border-gray-200 span"
+                ],
+                [
+                    "text/未绑定组织"
+                ]
+            ],
+            "offsetY": 9,
+            "offsetX": 45.4166259765625
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "div.w-72 > div.max-h-60 > div:nth-of-type(2) span"
+                ],
+                [
+                    "xpath//html/body/div[2]/div[2]/div[2]/div/button[2]/div/div/span"
+                ],
+                [
+                    "pierce/div.w-72 > div.max-h-60 > div:nth-of-type(2) span"
+                ],
+                [
+                    "text/金融业务板块"
+                ]
+            ],
+            "offsetY": 9.6666259765625,
+            "offsetX": 35.4166259765625
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/创建用户"
+                ],
+                [
+                    "button.bg-brand-600"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[3]/div/div[3]/div[2]/div[2]/div[2]/button[2]"
+                ],
+                [
+                    "pierce/button.bg-brand-600"
+                ]
+            ],
+            "offsetY": 17.6666259765625,
+            "offsetX": 48
+        }
+    ]
+}
