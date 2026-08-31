@@ -1,0 +1,70 @@
+{
+  "caseName": "系统登录",
+  "generatedAt": "2026-08-31 06:25:38",
+  "scenarios": {
+    "SC-001": {
+      "name": "系统登录-超级管理员正常登录",
+      "sourceRecording": "recordings/001_系统登录/001_系统登录.json",
+      "scripts": {
+        "agentBrowser": "001-系统登录-超级管理员正常登录.sh",
+        "playwright": "001-系统登录-超级管理员正常登录.js"
+      },
+      "steps": {
+        "step-1": {
+          "description": "打开 ASDM 平台门户首页（https://platform-sit01.asdm.ai/portal/）并设置视口 1692x721",
+          "expectedResult": "门户首页正常加载，页面标题为「ASDM AI资源中心」",
+          "recordingStepIndex": 1,
+          "isAssertion": false
+        },
+        "assert-1": {
+          "description": "断言门户首页加载成功：页面标题包含「ASDM AI资源中心」",
+          "expectedResult": "document.title 含「ASDM AI资源中心」",
+          "recordingStepIndex": 1,
+          "isAssertion": true
+        },
+        "step-2": {
+          "description": "点击门户首页页头的「登录」按钮，进入登录页",
+          "expectedResult": "浏览器跳转到登录页（URL 含 /signin）",
+          "recordingStepIndex": 2,
+          "isAssertion": false
+        },
+        "assert-2": {
+          "description": "断言已跳转到登录页：当前 URL 包含 signin",
+          "expectedResult": "URL 含 /signin（登录表单可见）",
+          "recordingStepIndex": 2,
+          "isAssertion": true
+        },
+        "step-3": {
+          "description": "在登录页「请输入邮箱地址」输入框中填写超级管理员邮箱",
+          "expectedResult": "邮箱输入框显示所填写的超级管理员邮箱",
+          "recordingStepIndex": 3,
+          "isAssertion": false
+        },
+        "step-4": {
+          "description": "在登录页「请输入您的密码」输入框中填写超级管理员密码",
+          "expectedResult": "密码输入框已填入密码（掩码显示）",
+          "recordingStepIndex": 4,
+          "isAssertion": false
+        },
+        "step-5": {
+          "description": "按 Tab 键将输入焦点从邮箱框切换到密码框",
+          "expectedResult": "输入焦点切换到密码输入框",
+          "recordingStepIndex": 6,
+          "isAssertion": false
+        },
+        "step-6": {
+          "description": "点击登录表单中的「登录」按钮提交登录",
+          "expectedResult": "表单提交成功，跳转回门户首页",
+          "recordingStepIndex": 16,
+          "isAssertion": false
+        },
+        "assert-3": {
+          "description": "断言登录成功：跳转回门户首页，URL 含 /portal/ 且页面标题为「ASDM AI资源中心」",
+          "expectedResult": "URL 含 /portal/ 且 document.title 含「ASDM AI资源中心」",
+          "recordingStepIndex": 16,
+          "isAssertion": true
+        }
+      }
+    }
+  }
+}

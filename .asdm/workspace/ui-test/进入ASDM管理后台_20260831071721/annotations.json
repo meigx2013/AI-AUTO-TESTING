@@ -1,0 +1,46 @@
+{
+  "caseName": "进入ASDM管理后台",
+  "generatedAt": "2026-08-31 07:17:21",
+  "scenarios": {
+    "SC-001": {
+      "name": "门户导航-从门户进入管理控制台",
+      "sourceRecording": "recordings/002_进入ASDM管理后台/002_进入ASDM管理后台.json",
+      "scripts": {
+        "agentBrowser": "001-门户导航-从门户进入管理控制台.sh",
+        "playwright": "001-门户导航-从门户进入管理控制台.js"
+      },
+      "steps": {
+        "step-1": {
+          "description": "打开 ASDM 平台门户首页（https://platform-sit01.asdm.ai/portal/）并设置视口 1692x787",
+          "expectedResult": "门户首页正常加载，页面标题为「ASDM AI资源中心」",
+          "recordingStepIndex": 1,
+          "isAssertion": false
+        },
+        "assert-1": {
+          "description": "断言门户首页加载成功：页面标题包含「ASDM AI资源中心」",
+          "expectedResult": "document.title 含「ASDM AI资源中心」",
+          "recordingStepIndex": 1,
+          "isAssertion": true
+        },
+        "step-2": {
+          "description": "点击门户页头的用户头像按钮（Admin Super），展开用户下拉菜单",
+          "expectedResult": "用户下拉菜单展开，显示「控制台管理」等菜单项",
+          "recordingStepIndex": 2,
+          "isAssertion": false
+        },
+        "step-3": {
+          "description": "点击用户下拉菜单中的「控制台管理」菜单项",
+          "expectedResult": "浏览器跳转到 ASDM 管理后台",
+          "recordingStepIndex": 3,
+          "isAssertion": false
+        },
+        "assert-2": {
+          "description": "断言已进入 ASDM 管理后台：URL 为 /projects 且页面标题为「ASDM」",
+          "expectedResult": "URL 含 /projects 且 document.title 为「ASDM」",
+          "recordingStepIndex": 3,
+          "isAssertion": true
+        }
+      }
+    }
+  }
+}
