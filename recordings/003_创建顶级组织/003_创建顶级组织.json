@@ -1,10 +1,10 @@
 {
-    "title": "002_创建组织",
+    "title": "003_创建顶级组织",
     "steps": [
         {
             "type": "setViewport",
             "width": 1707,
-            "height": 764,
+            "height": 734,
             "deviceScaleFactor": 1,
             "isMobile": false,
             "hasTouch": false,
@@ -12,11 +12,11 @@
         },
         {
             "type": "navigate",
-            "url": "https://platform-dt01.asdm.ai/projects",
+            "url": "https://platform-sit01.asdm.ai/projects",
             "assertedEvents": [
                 {
                     "type": "navigation",
-                    "url": "https://platform-dt01.asdm.ai/projects",
+                    "url": "https://platform-sit01.asdm.ai/projects",
                     "title": "ASDM | 平台概览"
                 }
             ]
@@ -29,20 +29,20 @@
                     "aria/首页"
                 ],
                 [
-                    "div.min-h-screen > div.flex nav a"
+                    "div.min-w-0 nav a"
                 ],
                 [
                     "xpath///*[@id=\"root\"]/div[1]/div[2]/header/div/div[1]/nav/div[1]/a"
                 ],
                 [
-                    "pierce/div.min-h-screen > div.flex nav a"
+                    "pierce/div.min-w-0 nav a"
                 ],
                 [
                     "text/首页"
                 ]
             ],
-            "offsetY": 9,
-            "offsetX": 11.666656494140625
+            "offsetY": 10,
+            "offsetX": 14.666656494140625
         },
         {
             "type": "click",
@@ -65,7 +65,7 @@
                     "text/平台级设置"
                 ]
             ],
-            "offsetY": 5,
+            "offsetY": 7,
             "offsetX": 34
         },
         {
@@ -76,17 +76,17 @@
                     "aria/组织"
                 ],
                 [
-                    "div.min-h-screen > div.flex > div button:nth-of-type(2)"
+                    "div.min-w-0 > div button:nth-of-type(2)"
                 ],
                 [
                     "xpath///*[@id=\"root\"]/div[1]/div[2]/div/div/div[2]/div[1]/button[2]"
                 ],
                 [
-                    "pierce/div.min-h-screen > div.flex > div button:nth-of-type(2)"
+                    "pierce/div.min-w-0 > div button:nth-of-type(2)"
                 ]
             ],
             "offsetY": 16.666656494140625,
-            "offsetX": 20
+            "offsetX": 25
         },
         {
             "type": "click",
@@ -102,8 +102,8 @@
                     "pierce/div.space-y-2 > div.flex button.bg-brand-600"
                 ]
             ],
-            "offsetY": 8.333328247070312,
-            "offsetX": 53.33331298828125
+            "offsetY": 13.333328247070312,
+            "offsetX": 49.33331298828125
         },
         {
             "type": "keyUp",
@@ -118,45 +118,35 @@
                     "aria/请输入组织名称"
                 ],
                 [
-                    "div.fixed div:nth-of-type(1) > input"
+                    "div.inset-0 div:nth-of-type(1) > input"
                 ],
                 [
-                    "xpath///*[@id=\"root\"]/div[1]/div[3]/div[2]/form/div[1]/input"
+                    "xpath///*[@id=\"root\"]/div[1]/div[4]/div[2]/form/div[1]/input"
                 ],
                 [
-                    "pierce/div.fixed div:nth-of-type(1) > input"
+                    "pierce/div.inset-0 div:nth-of-type(1) > input"
                 ]
             ],
-            "offsetY": 10.33331298828125,
-            "offsetX": 105.6666259765625
+            "offsetY": 19.33331298828125,
+            "offsetX": 66.6666259765625
         },
         {
             "type": "change",
-            "value": "金融业务板块",
+            "value": "测试组织01",
             "selectors": [
                 [
                     "aria/请输入组织名称"
                 ],
                 [
-                    "div.fixed div:nth-of-type(1) > input"
+                    "div.inset-0 div:nth-of-type(1) > input"
                 ],
                 [
-                    "xpath///*[@id=\"root\"]/div[1]/div[3]/div[2]/form/div[1]/input"
+                    "xpath///*[@id=\"root\"]/div[1]/div[4]/div[2]/form/div[1]/input"
                 ],
                 [
-                    "pierce/div.fixed div:nth-of-type(1) > input"
+                    "pierce/div.inset-0 div:nth-of-type(1) > input"
                 ]
             ],
-            "target": "main"
-        },
-        {
-            "type": "keyDown",
-            "target": "main",
-            "key": "Alt"
-        },
-        {
-            "type": "keyUp",
-            "key": "Tab",
             "target": "main"
         },
         {
@@ -170,53 +160,14 @@
                     "form > input"
                 ],
                 [
-                    "xpath///*[@id=\"root\"]/div[1]/div[3]/div[2]/form/input"
+                    "xpath///*[@id=\"root\"]/div[1]/div[4]/div[2]/form/input"
                 ],
                 [
                     "pierce/form > input"
                 ]
             ],
-            "offsetY": 21,
-            "offsetX": 109.6666259765625
-        },
-        {
-            "type": "change",
-            "value": "FinancialBusiness",
-            "selectors": [
-                [
-                    "aria/选填"
-                ],
-                [
-                    "form > input"
-                ],
-                [
-                    "xpath///*[@id=\"root\"]/div[1]/div[3]/div[2]/form/input"
-                ],
-                [
-                    "pierce/form > input"
-                ]
-            ],
-            "target": "main"
-        },
-        {
-            "type": "click",
-            "target": "main",
-            "selectors": [
-                [
-                    "div.fixed div.flex"
-                ],
-                [
-                    "xpath///*[@id=\"root\"]/div[1]/div[3]/div[2]/form/div[2]"
-                ],
-                [
-                    "pierce/div.fixed div.flex"
-                ],
-                [
-                    "text/取消创建"
-                ]
-            ],
-            "offsetY": 16.666656494140625,
-            "offsetX": 177.6666259765625
+            "offsetY": 18,
+            "offsetX": 159.6666259765625
         },
         {
             "type": "click",
@@ -226,17 +177,17 @@
                     "aria/创建"
                 ],
                 [
-                    "div.fixed button.bg-brand-600"
+                    "div.inset-0 button.bg-brand-600"
                 ],
                 [
-                    "xpath///*[@id=\"root\"]/div[1]/div[3]/div[2]/form/div[2]/button[2]"
+                    "xpath///*[@id=\"root\"]/div[1]/div[4]/div[2]/form/div[2]/button[2]"
                 ],
                 [
-                    "pierce/div.fixed button.bg-brand-600"
+                    "pierce/div.inset-0 button.bg-brand-600"
                 ]
             ],
-            "offsetY": 19.666656494140625,
-            "offsetX": 37
+            "offsetY": 20.666656494140625,
+            "offsetX": 35
         }
     ]
 }

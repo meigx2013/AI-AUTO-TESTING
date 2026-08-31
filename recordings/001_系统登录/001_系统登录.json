@@ -4,7 +4,7 @@
         {
             "type": "setViewport",
             "width": 1692,
-            "height": 753,
+            "height": 721,
             "deviceScaleFactor": 1,
             "isMobile": false,
             "hasTouch": false,
@@ -12,11 +12,11 @@
         },
         {
             "type": "navigate",
-            "url": "https://platform-dt01.asdm.ai/portal/",
+            "url": "https://platform-sit01.asdm.ai/portal/",
             "assertedEvents": [
                 {
                     "type": "navigation",
-                    "url": "https://platform-dt01.asdm.ai/portal/",
+                    "url": "https://platform-sit01.asdm.ai/portal/",
                     "title": "ASDM AI资源中心"
                 }
             ]
@@ -41,20 +41,15 @@
                     "text/登录"
                 ]
             ],
-            "offsetY": 22.91666603088379,
-            "offsetX": 31,
+            "offsetY": 16.91666603088379,
+            "offsetX": 34,
             "assertedEvents": [
                 {
                     "type": "navigation",
-                    "url": "https://platform-dt01.asdm.ai/signin?redirect=https%3A%2F%2Fplatform-dt01.asdm.ai%2Fportal%2F",
+                    "url": "https://platform-sit01.asdm.ai/signin?redirect=https%3A%2F%2Fplatform-sit01.asdm.ai%2Fportal%2F",
                     "title": "ASDM"
                 }
             ]
-        },
-        {
-            "type": "keyUp",
-            "key": "Tab",
-            "target": "main"
         },
         {
             "type": "change",
@@ -99,6 +94,34 @@
             "target": "main",
             "selectors": [
                 [
+                    "aria/请输入邮箱地址"
+                ],
+                [
+                    "form > div > div:nth-of-type(1) input"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div/div[1]/div/div/div[2]/form/div/div[1]/div/input"
+                ],
+                [
+                    "pierce/form > div > div:nth-of-type(1) input"
+                ],
+                [
+                    "text/super-admin@asdm.ai"
+                ]
+            ],
+            "offsetY": 23.333328247070312,
+            "offsetX": 220.16665649414062
+        },
+        {
+            "type": "keyUp",
+            "key": "Tab",
+            "target": "main"
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
                     "#root > div.relative > div > div.flex-col"
                 ],
                 [
@@ -109,8 +132,8 @@
                 ]
             ],
             "offsetY": 232,
-            "offsetX": 116,
-            "duration": 592.7000000476837
+            "offsetX": 180,
+            "duration": 560.3999999761581
         },
         {
             "type": "change",
@@ -148,8 +171,8 @@
                     "pierce/#root > div.relative > div > div.flex-col"
                 ]
             ],
-            "offsetY": 278,
-            "offsetX": 44
+            "offsetY": 252,
+            "offsetX": 101
         },
         {
             "type": "keyDown",
@@ -166,6 +189,29 @@
             "target": "main",
             "selectors": [
                 [
+                    "aria/请输入您的密码"
+                ],
+                [
+                    "form > div > div:nth-of-type(2) input"
+                ],
+                [
+                    "xpath///*[@id=\"root\"]/div[1]/div/div[1]/div/div/div[2]/form/div/div[2]/div/div/input"
+                ],
+                [
+                    "pierce/form > div > div:nth-of-type(2) input"
+                ],
+                [
+                    "text/superadmin@20260214"
+                ]
+            ],
+            "offsetY": 18.33331298828125,
+            "offsetX": 168.16665649414062
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
                     "#root > div.relative > div > div.flex-col"
                 ],
                 [
@@ -175,9 +221,9 @@
                     "pierce/#root > div.relative > div > div.flex-col"
                 ]
             ],
-            "offsetY": 321,
-            "offsetX": 0,
-            "duration": 541.0999999046326
+            "offsetY": 317,
+            "offsetX": 31,
+            "duration": 383.89999997615814
         },
         {
             "type": "change",
@@ -215,7 +261,7 @@
                     "pierce/#root > div.relative > div > div.flex-col"
                 ]
             ],
-            "offsetY": 322,
+            "offsetY": 319,
             "offsetX": 0
         },
         {
@@ -235,60 +281,13 @@
                     "pierce/form button"
                 ]
             ],
-            "offsetY": 21.33331298828125,
-            "offsetX": 219.16665649414062,
+            "offsetY": 24.33331298828125,
+            "offsetX": 231.16665649414062,
             "assertedEvents": [
                 {
                     "type": "navigation",
-                    "url": "https://platform-dt01.asdm.ai/portal/",
+                    "url": "https://platform-sit01.asdm.ai/portal/",
                     "title": "ASDM AI资源中心"
-                }
-            ]
-        },
-        {
-            "type": "click",
-            "target": "main",
-            "selectors": [
-                [
-                    "div.css-6su6fj svg"
-                ],
-                [
-                    "xpath///*[@id=\"root\"]/div/header/div/div[2]/button/svg"
-                ],
-                [
-                    "pierce/div.css-6su6fj svg"
-                ]
-            ],
-            "offsetY": 14,
-            "offsetX": 7.0103759765625
-        },
-        {
-            "type": "click",
-            "target": "main",
-            "selectors": [
-                [
-                    "aria/控制台管理"
-                ],
-                [
-                    "li:nth-of-type(2)"
-                ],
-                [
-                    "xpath//html/body/div[2]/div[3]/ul/li[2]"
-                ],
-                [
-                    "pierce/li:nth-of-type(2)"
-                ],
-                [
-                    "text/控制台管理"
-                ]
-            ],
-            "offsetY": 18.666656494140625,
-            "offsetX": 94.333251953125,
-            "assertedEvents": [
-                {
-                    "type": "navigation",
-                    "url": "https://platform-dt01.asdm.ai/projects",
-                    "title": "ASDM"
                 }
             ]
         }

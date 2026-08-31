@@ -1,5 +1,5 @@
 {
-    "title": "004_创建用户",
+    "title": "005_创建组织管理员",
     "steps": [
         {
             "type": "setViewport",
@@ -12,11 +12,11 @@
         },
         {
             "type": "navigate",
-            "url": "https://platform-dt01.asdm.ai/projects",
+            "url": "https://platform-sit01.asdm.ai/projects",
             "assertedEvents": [
                 {
                     "type": "navigation",
-                    "url": "https://platform-dt01.asdm.ai/projects",
+                    "url": "https://platform-sit01.asdm.ai/projects",
                     "title": "ASDM | 平台概览"
                 }
             ]
