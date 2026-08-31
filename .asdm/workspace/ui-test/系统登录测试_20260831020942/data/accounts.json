@@ -1,0 +1,9 @@
+{
+  "accounts": {
+    "superAdmin": {
+      "username": "super-admin@asdm.ai",
+      "password": "superadmin@20260214",
+      "role": "超级管理员"
+    }
+  }
+}

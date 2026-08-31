@@ -1,0 +1,8 @@
+{
+  "LOGIN-001": {
+    "description": "超级管理员正常登录（无业务写入值，凭据见 accounts.json 的 superAdmin）"
+  },
+  "LOGIN-002": {
+    "description": "登录后进入控制台管理（无业务写入值，依赖 LOGIN-001 建立的登录态）"
+  }
+}
