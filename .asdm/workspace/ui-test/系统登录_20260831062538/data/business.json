@@ -1,5 +1,0 @@
-{
-  "SC-001": {
-    "description": "系统登录场景无业务写入值；账号数据见 data/accounts.json（superAdmin）"
-  }
-}

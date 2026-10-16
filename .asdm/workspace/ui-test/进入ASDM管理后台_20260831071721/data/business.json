@@ -1,5 +1,0 @@
-{
-  "SC-001": {
-    "description": "从门户进入管理控制台为纯导航场景，无业务写入值；登录态凭据见 data/accounts.json（superAdmin）"
-  }
-}
