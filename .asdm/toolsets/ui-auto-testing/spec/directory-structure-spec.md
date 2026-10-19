@@ -1,7 +1,7 @@
 # 回放测试目录结构规格说明
 
 > 定义 agent-browser 回放测试产物的统一目录结构与落盘规则，作为
-> `testcase-to-sh` / `transfer-to-sh` 等工具的输出路径依据，以及脚本运行
+> `testcase-to-sh` / `testcase-to-sh` 等工具的输出路径依据，以及脚本运行
 > 产物（中间数据、日志、截图）的存放约定。
 >
 > - 根目录固定为 `.asdm/workspace/replay-testcase/`（相对项目根目录，不存在时先创建）
@@ -118,7 +118,7 @@ load_data_file "${DATA_DIR}/test-data.sh"        # 数据先于 ab_init 加载
 | `testcase-to-sh` §一/§十 | 每用例生成 `replay_testcase/<编号>_<用例名>.sh`；公共库 `common/common.sh`；中间数据落 `data/`；编排与计划落 `task/` |
 | `generate-test-data.md` | 刷新 `data/test-data.sh`（名称类数据带 `TEST_TS` 时间戳后缀） |
 | `generate-test-plan.md` | 生成/刷新 `task/run-all.sh` 与 `task/test-plan.md` |
-| `transfer-to-sh` §四 | 录制 JSON 回放脚本落 `.asdm/workspace/replay-recording/`（独立产物，不进本目录） |
+| `testcase-to-sh` §四 | 录制 JSON 回放脚本落 `.asdm/workspace/replay-recording/`（独立产物，不进本目录） |
 
 统一执行流程：
 

@@ -1,3 +1,6 @@
+---
+registryId: ui-auto-testing
+---
 # testcase-to-sh：测试用例 markdown → agent-browser 回放脚本（通用转换规范）
 
 > 将测试用例 markdown（操作步骤 / 预期结果 / 前置条件 三段式）翻译为可直接执行的
@@ -412,7 +415,7 @@ done
 
 批量转换（§十）或首次建立回放体系时生成：
 
-1. **`task/test-plan.md`**：按 `toolsets/transfer/test-plan.md` 模板生成
+1. **`task/test-plan.md`**：按 `.asdm/toolsets/ui-auto-testing/actions/generate-test-plan.md`（§五 A 模板）生成
    静态实例——任务清单（编号/名称/执行入口/登录身份/前置/数据依赖/
    产出/状态）、依赖树、执行方式、通过标准、豁免与阻塞记录表、
    脚本 vs 用例原文差异备注、执行记录表（执行时填写）

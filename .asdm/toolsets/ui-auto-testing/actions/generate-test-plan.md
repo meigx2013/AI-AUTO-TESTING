@@ -1,3 +1,6 @@
+---
+registryId: ui-auto-testing
+---
 # test-plan：生成测试计划（测试任务 + 全量编排脚本）
 
 > **执行本文档即生成测试计划与全量编排脚本**：大模型按 §四 步骤扫描
@@ -17,7 +20,7 @@
 >   + `common/common.sh` + `data/test-data.sh`）+ `test-cases/*.md` + README 依赖树
 > - 输出：`task/test-plan.md` + `task/run-all.sh`（模板见 §五；`task/` 不存在时
 >   先 `mkdir -p` 创建）
-> - 定位：本文件（`.asdm/toolsets/transfer/generate-test-plan.md`）是**生成逻辑
+> - 定位：本文件（`.asdm/toolsets/ui-auto-testing/actions/generate-test-plan.md`）是**生成逻辑
 >   唯一来源**；`task/` 下两个文件是生成产出的静态快照，不含生成逻辑，需要新
 >   计划时重新执行本文件，禁止在实例文件内手写生成规则
 > - 下游：`execute-test-task.md` 按计划逐任务执行；`run-all.sh` 是计划中
@@ -38,7 +41,7 @@
 
 | 术语 | 含义 | 载体 |
 | --- | --- | --- |
-| 本文档 | 生成测试计划的**命令详情**（SOP），不是计划本体 | `.asdm/toolsets/transfer/generate-test-plan.md` |
+| 本文档 | 生成测试计划的**命令详情**（SOP），不是计划本体 | `.asdm/toolsets/ui-auto-testing/actions/generate-test-plan.md` |
 | 测试计划 | = **测试任务定义**：任务清单 + 依赖链 + 身份/数据依赖 + 执行方式 + 通过标准 | `task/test-plan.md`（本文件产出之一） |
 | 全量编排脚本 | 计划「全量执行」方式的自动化落地 | `task/run-all.sh`（本文件产出之二，模板见 §五 B） |
 | 测试任务 | 计划中一条可执行任务，与一个回放脚本一一对应 | 计划任务表中一行 |
@@ -207,7 +210,7 @@ step 1 结论写入。
 ```markdown
 # ASDM 回放测试计划（测试任务）
 
-> 【静态实例】本文件由 .asdm/toolsets/transfer/generate-test-plan.md 生成，不含生成逻辑；
+> 【静态实例】本文件由 .asdm/toolsets/ui-auto-testing/actions/generate-test-plan.md 生成，不含生成逻辑；
 > 需要新计划时重新执行该文档，禁止在本文件内手写生成规则。
 >
 > - 最近生成：<YYYY-MM-DD HH:MM>　数据批次：TEST_TS=<MMDDHHmmss>
@@ -277,7 +280,7 @@ step 1 结论写入。
 # ============================================================================
 # task/run-all.sh —— 按依赖顺序串联执行全部回放用例
 # ============================================================================
-# 【生成说明】本文件由 .asdm/toolsets/transfer/generate-test-plan.md 生成
+# 【生成说明】本文件由 .asdm/toolsets/ui-auto-testing/actions/generate-test-plan.md 生成
 #   （静态快照），禁止手写编辑；任务清单/豁免判定/占位符特征由生成器按
 #   目录扫描结果写入下方「生成器写入区」。脚本集合变化后重新执行生成文档。
 # 【布局适配】当前为 <定版（replay_testcase/<编号_用例名>.sh + common/common.sh）/

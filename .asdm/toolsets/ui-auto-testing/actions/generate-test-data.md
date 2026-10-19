@@ -1,3 +1,6 @@
+---
+registryId: ui-auto-testing
+---
 # generate-test-data：刷新 test-data.sh 名称类测试数据
 
 > **执行本文档即刷新测试数据**：大模型按 §三 步骤操作，按 §一/§二 生成规则
@@ -200,7 +203,7 @@ bash -c 'source data/test-data.sh; \
 # ============================================================================
 # 【实例数据】本文件是 generate-test-data.md 刷新产出的静态数据快照，
 #         不含运行时生成逻辑；需要新数据时执行
-#         .asdm/toolsets/transfer/generate-test-data.md 重新刷新。
+#         .asdm/toolsets/ui-auto-testing/actions/generate-test-data.md 重新刷新。
 # 【最近刷新】TEST_TS=0824145422（2026-08-24）
 # 【加载】测试脚本统一加载（common/common.sh 的 load_data_file）：
 #         DATA_DIR="${SCRIPT_DIR}/../data"; load_data_file "${DATA_DIR}/test-data.sh"
