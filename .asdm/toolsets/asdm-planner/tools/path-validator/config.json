@@ -1,0 +1,19 @@
+{
+  "base_path": "/home/azureuser/source/asdm-product-management",
+  "asdm_admin_path": "asdm-admin",
+  "report_base_path": "docs/planning/Feat/FT-XXX",
+  "relative_depth": 4,
+  "path_patterns": {
+    "backend": "asdm-admin/asdm-admin-services/asdm-admin-services-core/src/main/java/ai/asdm/admin/core/**/*.java",
+    "migrations": "asdm-admin/deploy/mysql/migrations/*.sql",
+    "frontend": "asdm-admin/asdm-admin-web/src/**/*.tsx",
+    "i18n": "asdm-admin/asdm-admin-web/src/i18n/locales/**/*.json"
+  },
+  "example_files": [
+    "asdm-admin/asdm-admin-services/asdm-admin-services-core/src/main/java/ai/asdm/admin/core/controller/auth/PersonalAccessTokenController.java",
+    "asdm-admin/asdm-admin-services/asdm-admin-services-core/src/main/java/ai/asdm/admin/core/service/auth/PersonalAccessTokenService.java",
+    "asdm-admin/deploy/mysql/migrations/V1.1.2__Personal_Access_Tokens.sql",
+    "asdm-admin/asdm-admin-web/src/pages/Projects/Modules/Settings/UserPatTab.tsx",
+    "asdm-admin/asdm-admin-web/src/pages/Projects/Modules/Settings/CreatePatModal.tsx"
+  ]
+}
