@@ -2,7 +2,7 @@
 registryId: ui-auto-testing
 name: ui-auto-testing
 description: '面向 ASDM（及同类 Web 平台）的 UI 回放测试工具集：以三段式测试用例 markdown 为输入，翻译为 agent-browser 驱动的 bash 回放脚本，配合批次数据刷新与测试计划生成，支持单任务执行、全量回归与断点续跑。'
-version: 1.0.0
+version: 0.1.0
 guid: 83d1bae9-0592-400c-800e-b2309281f5b3
 entryPoint: README.md
 configType: toolset
