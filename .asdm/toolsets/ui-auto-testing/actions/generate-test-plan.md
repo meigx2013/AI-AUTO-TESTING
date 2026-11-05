@@ -33,7 +33,7 @@ registryId: ui-auto-testing
   `<编号>_<用例名>.sh`（数量不限，记为 N），公共库 `common/common.sh` 就位
   （历史布局为根目录下 `replay_testcase_<编号>_<用例名>.sh` + 同级 `common.sh`，
   按 §2.1 判定后写入实际路径）
-- `data/test-data.sh` 存在（提供批次 `TEST_TS`、变量清单与凭据）
+- `data/test-data.sh` 存在（提供数据批次 `BATCH_ID`（头部【数据批次】注释）、变量清单与凭据）
 - 用例源文件 `test-cases/<编号>_<用例名>.md` 存在（提供用例语义与依赖链参照）
 - 仅需文件读取，不要求被测平台可达（可达性在执行阶段由 execute-test-task 校验）
 
@@ -86,7 +86,7 @@ glob 匹配 `<编号>_<用例名>.sh`（现役布局；历史布局为根目录�
 
 | 输入 | 提取内容 | 用途 |
 | --- | --- | --- |
-| `data/test-data.sh` | 头部「最近刷新」的 `TEST_TS`；各变量默认值（含空值与占位符特征，见 §3.4） | 批次信息列 + 豁免/阻塞判定 |
+| `data/test-data.sh` | 头部【数据批次】注释的 `BATCH_ID`；各变量默认值（含空值与占位符特征，见 §3.4） | 批次信息列 + 豁免/阻塞判定 |
 | `test-cases/*.md` | 用例名、操作概要（一句话） | 任务表「说明」列 |
 | `README.md` §用例总览/执行顺序 | 依赖树 | 依赖链校验参照（§3.2） |
 | spec §2.3/§2.4 | `task/`、`result/` 职责与日志命名 | 执行方式与日志路径约定 |
@@ -146,7 +146,7 @@ glob 匹配 `<编号>_<用例名>.sh`（现役布局；历史布局为根目录�
 | 该任务 `require_vars` 的所有变量在 `test-data.sh` 有非空默认值 | 就绪 | 正常入表 |
 | 某必需变量默认值为**空**或为**占位符**（默认值含占位符特征，如 `xxx`、`…`、`placeholder` 等；具体特征由生成器扫描 test-data.sh 时确定并写入 run-all.sh 的 `PLACEHOLDER`） | 豁免-缺外部数据 | 任务保留，状态标注，不阻塞后续任务；生成对应 `EXEMPT_RULES` 条目（§五 B），执行时变量仍为空/占位符则跳过 |
 | 跨脚本落盘数据缺失（如消费方脚本读取 `data/pat.txt` 而文件缺失或为空） | 阻塞-缺前置产出 | 标注"先执行产出该数据的脚本"；若依赖链内前置先行则按序自然解决 |
-| `TEST_TS` 批次对应数据已在平台执行过（创建类重名） | 提示 | 头部备注"回放前执行 generate-test-data.md 刷新批次" |
+| `BATCH_ID` 批次对应数据已在平台执行过（创建类重名） | 提示 | 头部备注"换下一批次号执行 generate-test-data.md 重新生成" |
 
 占位符特征约定：test-data.sh 中某变量默认值含 `xxx` / `…`（全角省略号）/
 `placeholder` 等明显非真实值特征，或值为空，即视为占位符。生成器在报告中列出
@@ -178,26 +178,26 @@ glob 匹配 `<编号>_<用例名>.sh`（现役布局；历史布局为根目录�
 `replay_testcase/` 下 glob 匹配 `<编号>_<用例名>.sh` 得到 N 个脚本，读取各脚本头部注释与
 `require_vars` / `save_element_value` 调用行，汇总为任务草表。
 
-**step 3：读取数据与就绪状态**（§3.4）——从 `data/test-data.sh` 取 `TEST_TS`
-与变量默认值（含空值/占位符特征），检查跨脚本落盘数据文件现状，为每个任务标注
-就绪/豁免/阻塞。
+**step 3：读取数据与就绪状态**（§3.4）——从 `data/test-data.sh` 头部【数据批次】
+注释取 `BATCH_ID` 与变量默认值（含空值/占位符特征），检查跨脚本落盘数据文件现状，
+为每个任务标注就绪/豁免/阻塞。
 
 **step 4：构建并校验依赖链**（§3.2）——从脚本前置注释提取依赖边构 DAG，
 拓扑排序得执行顺序；确认 N 任务齐、无环、无悬空依赖；冲突以脚本为准并记录差异。
 
 **step 5：生成计划文件**——`mkdir -p .asdm/workspace/replay-testcase/task`，
-按 §五 A 模板写入 `task/test-plan.md`，头部记录生成时间、TEST_TS、布局、N、差异备注。
+按 §五 A 模板写入 `task/test-plan.md`，头部记录生成时间、BATCH_ID、布局、N、差异备注。
 
 **step 6：生成编排脚本**——按 §五 B 模板写入 `task/run-all.sh`：
-`TASKS` 数组 = step 4 的拓扑执行顺序（slug 列表）；`EXEMPT_RULES` = step 3 判定的
-豁免任务及其对应变量；`PLACEHOLDER` = step 3 确定的占位符特征；布局相关注释按
-step 1 结论写入。
+`BATCH_ID` = step 3 读取的数据批次（静态写入，横幅输出用）；`TASKS` 数组 = step 4 的
+拓扑执行顺序（slug 列表）；`EXEMPT_RULES` = step 3 判定的豁免任务及其对应变量；
+`PLACEHOLDER` = step 3 确定的占位符特征；布局相关注释按 step 1 结论写入。
 
 **step 7：验证**——任务行数 = 脚本数 N；任务表「执行入口」路径全部实际存在
 （`test -f` 逐条核验）；`bash -n task/run-all.sh` 语法校验通过；身份、依赖、产出
 与脚本注释一致；豁免/阻塞项均有留痕字段。
 
-**step 8：报告**——向用户报告：任务总数 N、就绪/豁免/阻塞分布、TEST_TS 批次、
+**step 8：报告**——向用户报告：任务总数 N、就绪/豁免/阻塞分布、BATCH_ID 批次、
 发现的脚本与 README 依赖差异、重号等冲突处理、建议执行入口
 （全量 / 单任务 / 断点续跑命令）。
 
@@ -213,7 +213,7 @@ step 1 结论写入。
 > 【静态实例】本文件由 .asdm/toolsets/ui-auto-testing/actions/generate-test-plan.md 生成，不含生成逻辑；
 > 需要新计划时重新执行该文档，禁止在本文件内手写生成规则。
 >
-> - 最近生成：<YYYY-MM-DD HH:MM>　数据批次：TEST_TS=<MMDDHHmmss>
+> - 最近生成：<YYYY-MM-DD HH:MM>　数据批次：BATCH_ID=<批次号，如 T001>
 > - 目录布局：<定版（replay_testcase/ 脚本 + common/common.sh）/ 历史（根目录平铺）>
 > - 任务数量：<N> 个（由目录扫描决定，脚本集合变化时重新生成）
 > - 日志目录：result/（固定名覆盖式 `<任务>.log` + 汇总 `run-all.log`，spec §2.5）
@@ -222,9 +222,9 @@ step 1 结论写入。
 
 | 项 | 值 |
 | --- | --- |
-| 数据批次 TEST_TS | <MMDDHHmmss> |
+| 数据批次 BATCH_ID | <批次号，如 T001> |
 | BASE_URL | <test-data.sh 默认值> |
-| 回放前是否需刷新数据 | <是：TEST_TS 批次已执行过，先跑 generate-test-data.md / 否> |
+| 回放前是否需刷新数据 | <是：BATCH_ID 批次已在平台执行过，换下一批次号执行 generate-test-data.md 重新生成 / 否> |
 | 跨脚本落盘数据现状 | <如 data/pat.txt 存在且非空 / 缺失> |
 
 ## 二、任务清单（共 <N> 个）
@@ -317,6 +317,9 @@ if [ -f "${DATA_DIR}/test-data.sh" ]; then
 fi
 
 # ==================== 生成器写入区（勿手改） ====================
+# 数据批次：生成器按 test-data.sh 头部【数据批次】BATCH_ID=… 静态写入（横幅输出用）
+BATCH_ID='<批次号，如 T001>'
+
 # 任务清单：依赖拓扑执行顺序（<N> 个，见 test-plan §三）
 TASKS=(
     <task-slug-1>
@@ -347,7 +350,7 @@ echo "============================================================"
 echo " ASDM 回放全量执行  开始: $(date '+%Y-%m-%d %H:%M:%S')"
 echo " 根目录: ${ROOT_DIR}"
 echo " 任务数: ${#TASKS[@]}"
-echo " 数据批次 TEST_TS: ${TEST_TS:-未知（test-data.sh 未声明）}"
+echo " 数据批次 BATCH_ID: ${BATCH_ID:-未知（test-data.sh 头部未标注）}"
 echo " 综合日志: ${RUN_LOG}"
 echo "============================================================"
 
@@ -414,8 +417,8 @@ echo "============================================================"
 
 - **脚本集合变化后**：新增 / 删除 / 重命名回放脚本（N 变化）——`test-plan.md`
   与 `run-all.sh` **必须同步重新生成**，保持任务清单与豁免判定一致
-- **刷新数据批次后**：`generate-test-data.md` 产出新 `TEST_TS`，计划头部与
-  就绪/豁免判定需同步
+- **刷新数据批次后**：`generate-test-data.md` 以新批次号执行并产出新 `BATCH_ID`
+  （如 T001 → T002），计划头部与就绪/豁免判定需同步
 - **目录布局迁移后**：历史布局 → 定版布局（`replay_testcase/` + `common/`），执行入口路径全变
 - **脚本头部变更后**：前置条件、`require_vars`、落盘产出注释有增删
 - **test-data.sh 变量变化后**：豁免变量增删、占位符特征变化

@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # ============================================================
 # ASDM 回放编排脚本（自动生成，请勿手改生成逻辑）
-# 生成文档：.asdm/toolsets/transfer/generate-test-plan.md（§五 B）
+# 生成文档：.asdm/toolsets/ui-auto-testing/actions/generate-test-plan.md（§五 B）
 # 配套计划：task/test-plan.md（同批生成）
-# 数据批次：TEST_TS=0901085429
+# 数据批次：BATCH_ID=T001
 # ------------------------------------------------------------
 # 【布局适配】当前布局：脚本集中放 replay_testcase/ 子目录（文件名 <slug>.sh，
 #  无 replay_testcase_ 前缀），公共库放 common/common.sh。
@@ -14,10 +14,11 @@
 #  012_system-logout（遗留脚本，无用例源文件，收尾置尾，见 test-plan.md §七 备注 2）。
 # 【豁免机制】EXEMPT_RULES 中任务若对应变量为空或含 PLACEHOLDER 占位符特征，
 #  判定为豁免-缺外部数据，跳过执行并留痕（test-plan.md §六）。
-# 【本批状态】TEST_TS=0901085429 批次下 GH_TOKEN / AGENT_ORBIT_KEY 均已填入
-#  真实值，7 条规则全部不触发（本批 27 任务全部就绪、豁免 0）。规则保留为
-#  【条件守卫】：后续刷新 test-data.sh 时变量若回退为空或占位符，对应任务
-#  自动重新判定为豁免，无需重新生成本脚本（test-plan.md §六）。
+# 【本批状态】BATCH_ID=T001 批次（批次号机制改造后首个批次）下：GH_TOKEN 为
+#  占位符 ghp_xxx → 011/014/016/017 触发豁免-缺外部数据；AGENT_ORBIT_KEY 已填
+#  真实值 → 018/022/023 守卫不触发。EXEMPT_RULES 保留为【条件守卫】：
+#  环境变量注入真实 GH_TOKEN 后豁免自动解除（环境变量优先于 test-data.sh），
+#  无需重新生成本脚本（test-plan.md §六）。
 # 【执行能力增强】三项能力（重新生成本脚本时需回填）：
 #  1. Ctrl+C 优雅中断：trap 捕获 SIGINT/SIGTERM，当前任务停止记「中断」（任务
 #     日志留痕），未开始任务记「未执行」，输出已执行汇总与耗时统计后以退出码
@@ -50,6 +51,9 @@ RUN_LOG="${RESULT_DIR}/run-all.log"   # main() 内截断重建；trap 中断提�
 mkdir -p "${RESULT_DIR}"
 
 # ---------- 生成器写入区（勿改动括号外框架） ----------
+# 数据批次：生成器按 test-data.sh 头部【数据批次】注释静态写入（横幅输出用）
+BATCH_ID='T001'
+
 TASKS=(
   001_system-login
   002_access-asdm
@@ -119,8 +123,9 @@ DEPS=(
 # 014/016/017 与 011 同属 GH_TOKEN 级联链（项目无
 # GitHub 仓库/CI 时三者必然无法执行），统一纳入豁免机制；
 # 重新生成本脚本时需回填此批增补（详见 task/test-plan.md §六 豁免说明）
-# 【本批状态】以下 7 条为条件守卫，当前批次变量均已填真实值 → 均不触发；
-#  变量回退为空/占位符时自动重新生效（见文件头【本批状态】注记）
+# 【本批状态】T001 批次：GH_TOKEN 为占位符 ghp_xxx → 011/014/016/017
+#  触发豁免-缺外部数据；AGENT_ORBIT_KEY 已填真实值 → 018/022/023 不触发。
+#  变量回退为空/占位符时未触发守卫自动重新生效（见文件头【本批状态】注记）
 EXEMPT_RULES=(
   "011_project-config|GH_TOKEN"
   "014_workspace-runs|GH_TOKEN"
@@ -240,10 +245,11 @@ main() {
   # 删除对应文件即强制重跑），避免时间戳堆叠导致无法分辨测试状态
   RUN_LOG="${RESULT_DIR}/run-all.log"
   : > "${RUN_LOG}"
-  # TEST_TS 由 generate-test-data.md 作为注释标注于 test-data.sh 头部（非变量），不在此引用
+  # 数据批次 BATCH_ID：生成器按 test-data.sh 头部【数据批次】注释静态写入
+  # 「生成器写入区」，横幅输出引用（test-data.sh 内为注释标注，非变量）
   local t_start="$(date +%s)"
   local t_start_str="$(date '+%Y-%m-%d %H:%M:%S')"
-  echo "==== ASDM 回放编排：共 ${#TASKS[@]} 个任务　开始: ${t_start_str} ====" | tee -a "${RUN_LOG}"
+  echo "==== ASDM 回放编排：共 ${#TASKS[@]} 个任务　数据批次 BATCH_ID=${BATCH_ID:-未知（test-data.sh 头部未标注）}　开始: ${t_start_str} ====" | tee -a "${RUN_LOG}"
 
   local pass=0 fail=0 exempt=0 skip=0 cascade=0 interrupt=0 notrun=0
   local exec_secs=0      # 已执行任务（通过/失败/中断）纯执行耗时合计（秒）

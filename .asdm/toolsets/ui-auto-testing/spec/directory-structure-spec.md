@@ -116,7 +116,7 @@ load_data_file "${DATA_DIR}/test-data.sh"        # 数据先于 ab_init 加载
 | 工具文档 | 输出约定 |
 | --- | --- |
 | `testcase-to-sh` §一/§十 | 每用例生成 `replay_testcase/<编号>_<用例名>.sh`；公共库 `common/common.sh`；中间数据落 `data/`；编排与计划落 `task/` |
-| `generate-test-data.md` | 刷新 `data/test-data.sh`（名称类数据带 `TEST_TS` 时间戳后缀） |
+| `generate-test-data.md` | 生成 `data/test-data.sh`（名称类数据按批次号命名：`批次号_类别_序号`，头部记录 `BATCH_ID`） |
 | `generate-test-plan.md` | 生成/刷新 `task/run-all.sh` 与 `task/test-plan.md` |
 | `testcase-to-sh` §四 | 录制 JSON 回放脚本落 `.asdm/workspace/replay-recording/`（独立产物，不进本目录） |
 
