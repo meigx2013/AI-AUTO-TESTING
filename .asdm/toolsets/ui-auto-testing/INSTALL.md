@@ -67,14 +67,14 @@ actionRef: .asdm/toolsets/ui-auto-testing/actions/<命令名>.md
 | 命令 | 功能 |
 |------|------|
 | `/testcase-to-sh` | 用例转换 — 测试用例 md → agent-browser 回放脚本 |
-| `/generate-test-data` | 数据生成 — 批次号驱动（BATCH_ID）生成批次名称类数据 |
+| `/generate-test-data` | 数据生成 — 批次号驱动（BATCH_ID）按登记表赋值规则整体刷新全部变量 |
 | `/generate-test-plan` | 计划生成 — 测试计划 + run-all.sh 全量编排 |
 
 ## 端到端工作流
 
 ```
-Step 1: /testcase-to-sh test-cases/           ← 用例 md 批量转换为回放脚本
-Step 2: /generate-test-data T001             ← 生成批次数据（批次号必传，每轮新回放前 +1）
+Step 1: /testcase-to-sh test-cases/           ← 用例 md 批量转换为回放脚本（新变量以初始值落盘，无需批次号）
+Step 2: /generate-test-data T001             ← 整体刷新批次数据（批次号必传，每轮新回放前 +1）
 Step 3: /generate-test-plan                   ← 生成测试计划与全量编排脚本
 Step 4: bash .asdm/workspace/replay-testcase/task/run-all.sh   ← 全量执行
         （调试：单任务执行；中断后：断点续跑，禁止整批重跑）

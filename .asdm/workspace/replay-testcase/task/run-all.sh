@@ -8,17 +8,21 @@
 # 【布局适配】当前布局：脚本集中放 replay_testcase/ 子目录（文件名 <slug>.sh，
 #  无 replay_testcase_ 前缀），公共库放 common/common.sh。
 #  脚本定位：${ROOT_DIR}/replay_testcase/<slug>.sh；目录布局变更时需重新生成。
-# 【身份切换】010-017、024-026 脚本内置 test01 切换（sesskey 覆盖），无需传参；
-#  需覆盖账号时以 TEST01_USER/TEST01_PASS 环境变量传入（load 时环境变量优先）。
-# 【编号说明】012 编号含双脚本：012_create-workspace（现役用例）、
-#  012_system-logout（遗留脚本，无用例源文件，收尾置尾，见 test-plan.md §七 备注 2）。
+# 【身份切换】本批 4 个任务全部以 super-admin 身份执行（脚本 require_vars 均为
+#  ASDM_USER/ASDM_PASS，无内置身份切换）；如需覆盖账号以 ASDM_USER/ASDM_PASS
+#  环境变量传入（load 时环境变量优先）。
+# 【编号说明】本批现役脚本 4 个（001~004），无重号编号；005 及后续编号脚本
+#  不在现役 replay_testcase/ 目录（test-data.sh 与登记表仍保留其变量定义，
+#  属数据域超集，不影响本批执行）；脚本集合恢复时重新生成本脚本。
 # 【豁免机制】EXEMPT_RULES 中任务若对应变量为空或含 PLACEHOLDER 占位符特征，
 #  判定为豁免-缺外部数据，跳过执行并留痕（test-plan.md §六）。
-# 【本批状态】BATCH_ID=T001 批次（批次号机制改造后首个批次）下：GH_TOKEN 为
-#  占位符 ghp_xxx → 011/014/016/017 触发豁免-缺外部数据；AGENT_ORBIT_KEY 已填
-#  真实值 → 018/022/023 守卫不触发。EXEMPT_RULES 保留为【条件守卫】：
-#  环境变量注入真实 GH_TOKEN 后豁免自动解除（环境变量优先于 test-data.sh），
-#  无需重新生成本脚本（test-plan.md §六）。
+# 【本批状态】BATCH_ID=T001 批次下：4 个任务的必需变量（ASDM_USER/ASDM_PASS/
+#  ORG_NAME/PARENT_ORG/SUB_ORG_NAME）均为非空非占位符真实值 → 本批无豁免任务，
+#  EXEMPT_RULES 为空（保留判定逻辑：后续批次 GH_TOKEN 等占位变量对应任务加入
+#  TASKS 后，按 test-plan.md §六 回填规则即可，无需重新生成本脚本）。
+#  另注：T001 批次创建类数据（T001_组织01/组织02）已于上轮回放在平台落库，
+#  003/004 重放按"组织树出现节点"断言口径可幂等通过（详见 test-plan.md §七 差异 2）；
+#  如需真实创建新数据，换下一批次号（T002）执行 generate-test-data.md 后重新回放。
 # 【执行能力增强】三项能力（重新生成本脚本时需回填）：
 #  1. Ctrl+C 优雅中断：trap 捕获 SIGINT/SIGTERM，当前任务停止记「中断」（任务
 #     日志留痕），未开始任务记「未执行」，输出已执行汇总与耗时统计后以退出码
@@ -59,30 +63,6 @@ TASKS=(
   002_access-asdm
   003_create-org
   004_create-sub-org
-  005_create-user
-  006_generate-pat
-  007_pipeline-config
-  008_feature-flag
-  009_resource-management-toolset
-  010_create-project
-  011_project-config
-  012_create-workspace
-  013_workspace-resources
-  014_workspace-runs
-  015_create-context
-  016_context-items
-  017_context-sync-status
-  018_agentorbit-config
-  019_hide-digidev-icon
-  020_asdm-org-agent
-  021_organization-agent-config
-  022_personal-avatar
-  023_digital-avatar-created-successfully
-  024_create-online-agent-space
-  025_online-knowledge-space
-  026_multi-step-build
-  099_efficiency-insights
-  012_system-logout
 )
 
 # 依赖表：元素 "任务slug|前置1 前置2 …"（前置取自
@@ -93,48 +73,13 @@ DEPS=(
   "002_access-asdm|001_system-login"
   "003_create-org|001_system-login"
   "004_create-sub-org|001_system-login 003_create-org"
-  "005_create-user|001_system-login"
-  "006_generate-pat|001_system-login"
-  "007_pipeline-config|001_system-login 006_generate-pat"
-  "008_feature-flag|001_system-login"
-  "009_resource-management-toolset|001_system-login"
-  "010_create-project|001_system-login 004_create-sub-org 005_create-user"
-  "011_project-config|001_system-login 010_create-project"
-  "012_create-workspace|001_system-login 005_create-user 010_create-project"
-  "013_workspace-resources|009_resource-management-toolset 010_create-project 012_create-workspace"
-  "014_workspace-runs|010_create-project 012_create-workspace 013_workspace-resources"
-  "015_create-context|010_create-project"
-  "016_context-items|010_create-project 015_create-context"
-  "017_context-sync-status|010_create-project 015_create-context 016_context-items"
-  "018_agentorbit-config|001_system-login"
-  "019_hide-digidev-icon|001_system-login"
-  "020_asdm-org-agent|001_system-login"
-  "021_organization-agent-config|001_system-login"
-  "022_personal-avatar|001_system-login"
-  "023_digital-avatar-created-successfully|001_system-login 018_agentorbit-config 022_personal-avatar"
-  "024_create-online-agent-space|001_system-login 005_create-user 010_create-project"
-  "025_online-knowledge-space|001_system-login 005_create-user 010_create-project"
-  "026_multi-step-build|001_system-login 005_create-user 010_create-project 025_online-knowledge-space"
-  "099_efficiency-insights|001_system-login 005_create-user"
-  "012_system-logout|001_system-login"
 )
 
 # EXEMPT_RULES：<任务slug|变量>（键必须与 TASKS 项一致），变量为空或含占位符特征则豁免
-# 014/016/017 与 011 同属 GH_TOKEN 级联链（项目无
-# GitHub 仓库/CI 时三者必然无法执行），统一纳入豁免机制；
-# 重新生成本脚本时需回填此批增补（详见 task/test-plan.md §六 豁免说明）
-# 【本批状态】T001 批次：GH_TOKEN 为占位符 ghp_xxx → 011/014/016/017
-#  触发豁免-缺外部数据；AGENT_ORBIT_KEY 已填真实值 → 018/022/023 不触发。
-#  变量回退为空/占位符时未触发守卫自动重新生效（见文件头【本批状态】注记）
-EXEMPT_RULES=(
-  "011_project-config|GH_TOKEN"
-  "014_workspace-runs|GH_TOKEN"
-  "016_context-items|GH_TOKEN"
-  "017_context-sync-status|GH_TOKEN"
-  "018_agentorbit-config|AGENT_ORBIT_KEY"
-  "022_personal-avatar|AGENT_ORBIT_KEY"
-  "023_digital-avatar-created-successfully|AGENT_ORBIT_KEY"
-)
+# 本批（T001）4 个任务必需变量均为非空非占位符真实值 → 无豁免任务，规则集为空；
+# 后续批次如出现占位变量任务（如 GH_TOKEN 类），按 test-plan.md §六 回填
+# "任务slug|变量" 条目即可（重新生成本脚本时需回填此批说明）
+EXEMPT_RULES=()
 # 占位符特征（test-data.sh 中豁免变量默认值含此特征，如 GH_TOKEN=ghp_xxx…）
 PLACEHOLDER="xxx"
 # -------------------------------------------------------

@@ -13,7 +13,7 @@ toolset-id: ui-auto-testing
 toolset-name: ui-auto-testing
 version: 0.2.0
 updated-date: 2026-11-05
-toolset-description: 面向 ASDM（及同类 Web 平台）的 UI 回放测试工具集：以三段式测试用例 markdown 为输入，翻译为 agent-browser 驱动的 bash 回放脚本，配合批次号驱动的数据生成（BATCH_ID + 变量总登记表）与测试计划生成，支持单任务执行、全量回归与断点续跑。
+toolset-description: 面向 ASDM（及同类 Web 平台）的 UI 回放测试工具集：以三段式测试用例 markdown 为输入，翻译为 agent-browser 驱动的 bash 回放脚本，配合批次号驱动的数据刷新（BATCH_ID + 变量总登记表赋值规则，整体刷新全部变量）与测试计划生成，支持单任务执行、全量回归与断点续跑。
 
 ## Overview
 
@@ -21,7 +21,7 @@ ui-auto-testing（toolset-id: ui-auto-testing）是一个 ASDM 工具集，面�
 
 - **用例即脚本来源**：三段式测试用例 markdown（操作步骤 / 预期结果 / 前置条件）是唯一输入，AI 按通用转换规范（动词识别表 → 翻译模板）翻译为可执行 bash 回放脚本，不绑定任何具体用例内容
 - **公共库沉淀**：`common/common.sh` 一次生成、全部脚本 source 复用——业务脚本只写"做什么"，公共库管"怎么驱动浏览器"；通用能力（快照定位 / JS 优先点击 / 轮询等待 / 软硬断言分级）单点沉淀、全脚本共享
-- **批次数据机制**：`/generate-test-data T001` 以显式批次号（BATCH_ID）生成整批数据，名称类数据一律 `批次号_类别_序号`（如 `T001_组织01`），每批回放在平台生成全新数据互不冲突；同批次依赖链字面对齐（下游引用与上游产物字面一致）
+- **批次数据机制**：`/generate-test-data T001` 以显式批次号（BATCH_ID）按登记表"赋值规则"列**整体刷新全部定义域变量**——变量级规则（`fixed`/`batch`/`ref`/`env`）优先，未定义规则的变量按批次生成规则兜底为 `批次号_类别_序号`（如 `T001_组织01`），每批回放在平台生成全新数据互不冲突；同批次依赖链字面对齐（下游引用与上游产物字面一致）
 - **静态快照 + 生成逻辑分离**：`data/test-data.sh`、`task/test-plan.md`、`task/run-all.sh` 均为生成产出的静态实例，生成逻辑唯一来源在 `actions/` 指令文档，需要更新时重新执行对应指令，禁止在实例文件内手写生成规则
 - **编号序即依赖序**：用例/脚本文件名 `NNN_名称` 的 3 位编号承担排序、依赖、执行三重语义；依赖链由脚本头部注释动态推导（DAG + 拓扑序），替代固定骨架
 
@@ -30,7 +30,7 @@ ui-auto-testing（toolset-id: ui-auto-testing）是一个 ASDM 工具集，面�
 | Action | 功能 | 输入 | 产出 | 执行时机 |
 |--------|------|------|------|----------|
 | `testcase-to-sh` | **用例转换**：测试用例 md → agent-browser 回放脚本 | 单个用例文件或用例目录 | `replay_testcase/<NNN>_<名称>.sh`、`common/common.sh`、`data/test-data.sh` 分节追加 | 首次建立回放体系 / 用例集变化时 |
-| `generate-test-data` | **数据生成**：按批次号 + 变量总登记表生成批次名称类数据 | 批次号（必传，如 `T001`；或 `BATCH_ID` 环境变量等价） | `data/test-data.sh` 全量静态实例（BATCH_ID=T001） | 每批新回放前生成一次 |
+| `generate-test-data` | **数据生成**：按批次号 + 变量总登记表赋值规则整体刷新全部变量 | 批次号（必传，如 `T001`；或 `BATCH_ID` 环境变量等价） | `data/test-data.sh` 全量静态实例（BATCH_ID=T001） | 每批新回放前生成一次 |
 | `generate-test-plan` | **计划生成**：扫描脚本集合 → 测试计划 + 全量编排脚本 | `.asdm/workspace/replay-testcase/` 目录扫描 | `task/test-plan.md`、`task/run-all.sh` | 脚本集合变化 / 数据批次刷新 / 布局迁移后 |
 
 ### 整体执行流程（三文档协作）
@@ -46,7 +46,7 @@ test-cases/<NNN>_<名称>.md（用例源，三段式）
 replay_testcase/<NNN>_<名称>.sh × N
         │
         ▼
-② generate-test-data：按批次号生成名称类数据（如 /generate-test-data T001）
+② generate-test-data：按批次号 + 赋值规则整体刷新全部变量（如 /generate-test-data T001）
         │
         ▼
 data/test-data.sh（T001 批次静态快照，头部记录 BATCH_ID）
@@ -64,7 +64,7 @@ data/test-data.sh（T001 批次静态快照，头部记录 BATCH_ID）
 
 ### 结构速览
 
-工具集含 **3 个指令文档**（`actions/`）、**1 个公共方法库脚本**（`scripts/`）、**2 个规范文档**（`spec/`）、**2 个参考文档**（`docs/`，含批次号改造方案）。
+工具集含 **3 个指令文档**（`actions/`）、**1 个公共方法库脚本**（`scripts/`）、**2 个规范文档**（`spec/`）、**4 个参考文档**（`docs/`，含批次号改造方案、变量规则改造方案、规则定版基线与需求提示词存档）。
 
 ### 安装
 
@@ -83,7 +83,7 @@ Follow instructions in .asdm/toolsets/ui-auto-testing/INSTALL.md
 - JS 优先点击：agent-browser 坐标点击对部分 SPA 元素静默失效，统一 `el.click()`（文本经 base64 传递，无注入风险）；命中 disabled/notfound 时轮询等待
 - 软硬断言分级：预期结果校验用软断言（WARN 累计、finish 汇总），流程性关键节点用硬断言立即失败
 - 轮询代替固定等待：页面渲染、URL 跳转、异步结果一律 `wait_for_*` 轮询
-- 批次数据机制：批次号 `T001`（格式 `^T\d{3,4}$`）必传，名称类数据一律 `批次号_类别_序号`（同类别序号 01 自动递增）防重名；变量总登记表（generate-test-data.md）是全部用例变量唯一登记处；依赖链对齐规则保证下游变量与上游产物字面一致；环境变量优先于 test-data.sh 默认值
+- 批次数据机制：批次号 `T001`（格式 `^T\d{3,4}$`）必传，未定义变量级规则的名称类数据一律按批次生成规则兜底为 `批次号_类别_序号`（同类别序号 01 自动递增）防重名；变量总登记表（generate-test-data.md）是全部用例变量唯一登记处，其"赋值规则"列是求值唯一依据（变量级 `fixed`/`batch`/`ref`/`env` 优先、空规则批次兜底）；`ref` 规则保证下游变量与上游产物字面一致；环境变量优先于 test-data.sh 默认值
 - 敏感数据纪律：回放脚本内不出现明文密码/Token，一律经 test-data.sh 或环境变量；落盘凭据文件 chmod 600，禁止提交版本库
 - 平台行为特性清单：12 类"不报错、静默无效"的平台陷阱及内置对策（提交按钮静默拦截、输入超长静默截断、浮层下拉 CDP 错误、角色与描述不符等）
 - 豁免机制：外部依赖不满足（上传文件不存在、Token 为占位符）的任务自动跳过并记"豁免"，环境变量传入真实值即解除
@@ -113,7 +113,7 @@ Follow instructions in .asdm/toolsets/ui-auto-testing/INSTALL.md
 
 **公共库 `common.sh` 提供 11 个方法族**：初始化（`ab_init`/`load_data_file`/`require_vars`）、快照定位、等待轮询、元素操作（`ab_click` 核心）、下拉框、上传/取值、树/搜索、iframe 穿透（`act_in_frame`）、断言（软/硬分级）、登录导航、收尾（`finish`）。修复与增强单点沉淀、全脚本共享；通用新能力先沉淀进库再调用，禁止在业务脚本内复制库函数。
 
-**数据机制**：全部用例共用 `data/test-data.sh`（`: "${VAR:=默认值}"` 形式，环境变量优先）；新用例数据**先登记后追加**——转换中识别的新变量先登记进 `generate-test-data.md` 变量总登记表（分配类别与序号），再按登记结果分节追加实例，禁止独立数据文件；变量命名约定——凭据类 `<角色>_USER/_PASS`、名称类 `<实体>_NAME`（批次实例：批次号_类别_序号，见登记表）、运行产物类走 `data/` 落盘文件。
+**数据机制**：全部用例共用 `data/test-data.sh`（`: "${VAR:=默认值}"` 形式，环境变量优先）；新用例数据**提取 → 登记 → 追加**三步走——转换中提取本用例全部变量（信息录入块 / 选择项 / 前置引用实体 / 登录凭据 / OS 路径参数化），登记进 `generate-test-data.md` 变量总登记表（十字段，含初始值与赋值规则；前置引用型变量自动登记 `ref` 规则），再以**初始值 = 用例输入字面值**分节追加（行注释 `# 初始值(用例输入): <原值>` 可回溯，同名不覆盖），禁止独立数据文件；转换不依赖批次号，批次实例在刷新阶段产生；变量命名约定——凭据类 `<角色>_USER/_PASS`、名称类 `<实体>_NAME`（批次实例：批次号_类别_序号，见登记表）、运行产物类走 `data/` 落盘文件。
 
 **幂等分级**：登录/导航类天然幂等；配置变更类收敛到目标状态；上传/更新类经"确认覆盖"弹窗链幂等；**创建类不幂等**——依赖批次号推进的新批次数据（T001 → T002）或断点续跑。
 
@@ -123,10 +123,10 @@ Follow instructions in .asdm/toolsets/ui-auto-testing/INSTALL.md
 
 ### 数据生成（generate-test-data）
 
-以显式批次号（`/generate-test-data T001`）按命名规则（`批次号_类别_序号`）生成 `data/test-data.sh` 中名称类测试数据，供整批回放使用。
+以显式批次号（`/generate-test-data T001`）按登记表**变量级赋值规则**（`fixed` / `batch` / `ref` / `env` 五类语法，§2.0）**整体刷新** `data/test-data.sh` 全部定义域变量（不再仅名称类），供整批回放使用。
 
-- **变量总登记表**：`generate-test-data.md` 是全部用例变量的唯一登记处（变量名 / 类别 / 序号 / 取值属性 / 依赖对齐 / 来源用例）；10 个命名类别（用户邮箱 `USER` / 组织 `组织` / `PAT` / `项目` / `知识空间` / `智能体空间` / `知识源` / `分身` / `流水线` 等）+ 非名称类（固定值 / 外部凭据豁免 / 运行产物）；登记表 ⊇ test-data.sh 定义变量集是必过验证，`/testcase-to-sh` 新增变量必须先登记
-- 生成规则：批次号必传（格式 `^T\d{3,4}$`，或 `BATCH_ID` 环境变量等价）；创建型变量按类别分组、按登记顺序占序号（01 起两位自动递增，同类别上限 99）；引用型变量不占序号、字面等于上游实例值；固定数据（密码、角色等）不走创建规则保持静态值，外部凭据留空由 run-all.sh 豁免
+- **变量总登记表**：`generate-test-data.md` 是全部用例变量的唯一登记处（变量名 / 类别 / 序号 / 取值属性 / 固定值或当前值 / 初始值 / 赋值规则 / 依赖对齐 / 来源用例 / 备注，十字段）；10 个命名类别（用户邮箱 `USER` / 组织 `组织` / `PAT` / `项目` / `知识空间` / `智能体空间` / `知识源` / `分身` / `流水线` 等）+ 非名称类（固定值 / 外部凭据豁免 / 运行产物）；**初始值 = 用例输入字面值**（用例原文可回溯，无法回溯的填"（缺）"并备注兜底来源）；**赋值规则 = 求值唯一依据**（规则与取值属性冲突时以规则为准）；登记表 ⊇ test-data.sh 定义变量集是必过验证，`/testcase-to-sh` 新增变量必须先登记
+- 生成规则：批次号必传（格式 `^T\d{3,4}$`，或 `BATCH_ID` 环境变量等价）；求值顺序为"变量级规则优先 → 无规则批次兜底"——`fixed`/`batch`/空规则先行求值，`ref` 变量按依赖 DAG 拓扑序逐个字面复制（成环终止并报告环上变量），`env` 保持占位由 run-all.sh 豁免；未定义规则的名称类变量按批次生成规则兜底（按类别分组、按登记顺序占序号 01 起两位自动递增，同类别上限 99）；整体重写前备份 test-data.sh 至 `data/.backup/`；脚本级 8 条变量不入 test-data.sh、不参与刷新
 - 依赖链对齐：同一批次号贯穿整条依赖链，下游变量与上游产物**字面一致**（写入静态值，不用变量引用）：
 
 ```
@@ -143,7 +143,7 @@ Follow instructions in .asdm/toolsets/ui-auto-testing/INSTALL.md
 
 任何一环批次实例不一致，后续用例都会因找不到上游数据（组织/用户不存在、登录失败）而失败。
 
-- 生成后自动验证：`bash -n` 语法 + `source` 后输出全部变量核对批次前缀与字面一致性 + 登记表-定义变量 diff 为空 + export 清单对齐
+- 生成后自动验证（六项）：`bash -n` 语法 + `source` 后输出全部变量核对批次前缀与字面一致性 + 登记表-定义变量 diff 为空 + export 清单对齐 + 规则求值复核（抽 5 个变量人工重算比对）+ 同批幂等复核（重刷第二次 diff 仅允许头部日期注释差异）
 - 生成时机：每轮新回放前批次号 +1（T001 → T002）生成一次；同一批回放内禁止再次生成（003 已按旧数据创建后再生成，004 起引用的就是平台上不存在的新数据）；断点续跑/回放历史批次不生成、沿用原批次号；重名失败换下一批次号重新生成
 - 限制：批次号人为管理（防跳号/复用，test-data.sh 头部记录最近批次号供对账）；每类别序号上限 99；每批回放在平台留下带 `T0xx_` 前缀的数据（不自动清理，按前缀批量辨识），需定期清理；`test-data.sh` 含明文凭据禁止提交版本库
 
@@ -197,8 +197,8 @@ Follow instructions in .asdm/toolsets/ui-auto-testing/INSTALL.md
 
 安装完成后，用户可以使用以下命令完成端到端工作流：
 
-1. **`/testcase-to-sh`**：测试用例 md → 回放脚本 + 公共库 + 数据文件（新变量先登记）
-2. **`/generate-test-data T001`**：按批次号生成批次名称类数据（BATCH_ID）
+1. **`/testcase-to-sh`**：测试用例 md → 回放脚本 + 公共库 + 数据文件（新变量提取登记，初始值 = 用例输入值；无需批次号即可冷启动）
+2. **`/generate-test-data T001`**：按批次号 + 赋值规则整体刷新全部变量（BATCH_ID）
 3. **`/generate-test-plan`**：扫描脚本集合 → 测试计划 + 全量编排脚本
 4. **执行**：`bash .asdm/workspace/replay-testcase/task/run-all.sh`（全量）/ 单任务 / 断点续跑
 
@@ -207,10 +207,11 @@ Follow instructions in .asdm/toolsets/ui-auto-testing/INSTALL.md
 ```
 # 用例 markdown 就绪（test-cases/NNN_名称.md，三段式）→ 转换 → 刷新数据 → 生成计划 → 执行
 
-# Step 1: 批量转换用例（生成 replay_testcase/*.sh + common/common.sh + data/test-data.sh）
+# Step 1: 批量转换用例（生成 replay_testcase/*.sh + common/common.sh + data/test-data.sh 分节）
+#         新变量以初始值（用例输入字面值）落盘，无需批次号即可完成 bash -n / 可达性 / 链路验证
 /testcase-to-sh test-cases/
 
-# Step 2: 生成批次数据（批次号必传，每轮新回放前批次号 +1）
+# Step 2: 生成批次数据（批次号必传，每轮新回放前批次号 +1；按登记表赋值规则整体刷新全部变量）
 /generate-test-data T001
 
 # Step 3: 生成测试计划与全量编排脚本
@@ -226,7 +227,7 @@ bash .asdm/workspace/replay-testcase/task/run-all.sh
 
 | 机制 | 说明 | 落地点 |
 |------|------|--------|
-| 批次号机制 | 名称类数据 `批次号_类别_序号`（BATCH_ID 如 T001），每批全新数据规避创建类重名；批次号人为推进（每轮 +1） | test-data.sh / generate-test-data |
+| 批次号机制 | 名称类数据 `批次号_类别_序号`（BATCH_ID 如 T001），每批全新数据规避创建类重名；批次号人为推进（每轮 +1）；登记表"赋值规则"列为求值唯一依据（变量级规则优先、空规则批次兜底），刷新时整体重写全部定义域变量 | test-data.sh / generate-test-data |
 | 字面对齐链 | 下游引用变量与上游产物字面一致（不用变量引用） | test-data.sh |
 | 编号序即依赖序 | NNN 编号承担排序/依赖/执行三重语义；依赖链由脚本注释动态推导（DAG + 拓扑序） | testcase-to-sh / generate-test-plan |
 | 幂等分级 | 登录/配置类幂等；上传类弹窗链幂等；创建类不幂等 → 靠新批次数据 | testcase-to-sh |
@@ -258,14 +259,15 @@ ui-auto-testing 工具集的结构如下：
         ├── README.md                         ## 本文件
         ├── manifest.json                     ## 工具集清单
         ├── actions/                          ## 指令文档（生成逻辑唯一来源）
-        │   ├── testcase-to-sh.md             ## 用例转换：测试用例 md → agent-browser 回放脚本
-        │   ├── generate-test-data.md         ## 数据生成：批次号 + 变量总登记表 + 批次实例生成
+        │   ├── testcase-to-sh.md             ## 用例转换：测试用例 md → agent-browser 回放脚本（变量提取登记 + 初始值追加）
+        │   ├── generate-test-data.md         ## 数据生成：批次号 + 变量总登记表（赋值规则列）+ 整体刷新
         │   └── generate-test-plan.md         ## 计划生成：测试计划 + run-all.sh 全量编排
         ├── scripts/                          ## 公共方法库
         │   └── agent-browser-lib.sh          ## agent-browser 回放公共库（eval 驱动 iframe 操作框架）
         ├── docs/                             ## 参考文档
-        │   ├── ui-auto-testing-execution-logic.md  ## 三个 Action 的执行逻辑梳理
-        │   └── batch-data-refactor-plan.md   ## 冒烟测试数据批次号改造方案（时间戳批次 → BATCH_ID 批次号）
+        │   ├── 01_batch-data-refactor-plan.md        ## 冒烟测试数据批次号改造方案（时间戳批次 → BATCH_ID 批次号，历史方案存档）
+        │   ├── 02_ui-auto-testing-variable-rule-refactor-plan.md  ## 变量提取与赋值规则改造方案（本仓现行机制的来源方案）
+        │   └── 03_variable-rule-t1-baseline.md      ## 赋值规则语法与登记表 schema 定版基线（五类规则 + 67 条映射样表）
         └── spec/
             ├── agent-browser-spec.md         ## agent-browser CLI 能力规范（安装/平台兼容/子命令）
             └── directory-structure-spec.md   ## 回放测试目录结构与落盘规则
@@ -282,7 +284,8 @@ ui-auto-testing 工具集的工作区结构（`.asdm/workspace/replay-testcase/`
 ├── replay_testcase/                        # 回放脚本（每用例一个，编号序即依赖序）
 │   └── <NNN>_<名称>.sh                     # 如 001_system-login.sh
 ├── data/                                   # 测试数据
-│   ├── test-data.sh                        # 统一测试数据（generate-test-data 按批次号生成，头部记录 BATCH_ID）
+│   ├── test-data.sh                        # 统一测试数据（testcase-to-sh 以初始值分节追加，generate-test-data 按赋值规则整体刷新，头部记录 BATCH_ID）
+│   ├── .backup/                            # 刷新备份（test-data.<批次号>.<日期>.sh）
 │   └── <中间数据>.txt                      # 跨用例传递（如 pat.txt，chmod 600）
 ├── task/                                   # 任务编排
 │   ├── run-all.sh                          # 全量串联执行编排脚本
