@@ -19,16 +19,15 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"      # = .../replay-testcase/replay_
 DATA_DIR="${SCRIPT_DIR}/../data"                 # 数据在同级 data/ 目录
 load_data_file "${DATA_DIR}/test-data.sh"
 
-BASE_URL="${BASE_URL:-https://asdm-dt01.leansoftx.com/}"
+BASE_URL="${BASE_URL:-https://asdm-sit.leansoftx.com/}"
 
 ab_init
 require_vars ASDM_USER ASDM_PASS
 
 # ---------- 操作步骤 ----------
 # step 1(原步骤 1): 浏览器地址栏输入平台首页地址
-#   决断：用例原文 URL 为 https://asdm-sit.leansoftx.com/，与 test-data.sh 的
-#   BASE_URL（https://asdm-dt01.leansoftx.com/）不一致——按规范以 test-data.sh
-#   统一（环境变量 BASE_URL=... 可覆盖），差异记入交付说明。
+#   用例原文 URL（https://asdm-sit.leansoftx.com/）与 test-data.sh 的
+#   BASE_URL 一致，无差异；环境变量 BASE_URL=... 可覆盖。
 # step 2(原步骤 2): portal 页面右上角点击【登录】，页面跳转到 ASDM 登录页
 # step 3(原步骤 3): 输入邮箱地址（ASDM_USER）
 # step 4(原步骤 4): 输入密码（ASDM_PASS）

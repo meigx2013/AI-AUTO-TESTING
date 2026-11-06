@@ -15,8 +15,8 @@
 # ============================================================================
 
 # ---------- 公共配置（所有用例共享） ----------
-# 初始值(用例输入): https://asdm-sit.leansoftx.com/（001 原文）  赋值规则: fixed:https://asdm-dt01.leansoftx.com/
-: "${BASE_URL:=https://asdm-dt01.leansoftx.com/}"   # 平台首页地址
+# 初始值(用例输入): https://asdm-sit.leansoftx.com/（001 原文）  赋值规则: fixed:https://asdm-sit.leansoftx.com/
+: "${BASE_URL:=https://asdm-sit.leansoftx.com/}"   # 平台首页地址
 # 初始值(用例输入): （缺）（公共配置无用例原文）  赋值规则: fixed:1
 : "${HEADED:=1}"                                   # 1=显示浏览器窗口，0=无头模式
 
