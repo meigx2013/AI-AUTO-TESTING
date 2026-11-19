@@ -344,6 +344,21 @@ refs_of_role() {  # $1=角色名（如 combobox）
     snap_i | grep -E -- "- ${1}" | grep -oE 'e[0-9]+'
 }
 
+# refs_of_role_after — 区段截取枚举：从快照中含"区段特征文本"的行起截到末尾，
+# 在该区段内枚举指定角色元素的 ref（005 实践沉淀）。
+# 【用途】弹窗内多个无标签下拉框按位置取用（如"第一个/第二个下拉框"）：
+#         弹窗容器渲染为 generic 元素、其可见文本是整块内容无分隔拼接，
+#         纯文本地址会误命中导致 sed 截取起点前移、误取区段外控件
+#         （005 实测曾误取"账户状态"下拉）——故 sed 地址必须用
+#         「双引号完整包围」模式 \"文本\"，以快照行内文本两侧的引号定界。
+# 【参数】$1 = 区段特征文本；$2 = 角色名（如 combobox）
+# 【输出】stdout = 每行一个 eN（按快照出现顺序，仅区段内）
+# 【示例】first=$(refs_of_role_after '新增角色映射' 'combobox' | head -1)
+# 【注意】$1 按字面匹配（含引号定界），勿传正则；快照行文本含 $1 时即命中
+refs_of_role_after() {  # $1=区段特征文本 $2=角色名
+    snap_i | sed -n "/\"${1}\"/,\$p" | grep -E -- "- ${2}" | grep -oE 'e[0-9]+'
+}
+
 # ---------------------------------------------------------------------------
 # 3. 页面级导航 / 等待
 # ---------------------------------------------------------------------------
@@ -715,6 +730,113 @@ select_by_native() {  # $1=ref $2=选项文本 $3=说明(可选)
     ab_wait 500
 }
 
+# select_by_keyboard — 原生 select 键盘交互选择（005 实践沉淀）
+# 【用途】React 受控表单中的原生 select：agent-browser select（Playwright
+#         selectOption）派发的 change 不进 React state、被后续重渲染回滚
+#         （005"角色映射"实测）——改键盘交互：方向键改值会触发 input+change
+#         双事件，受控组件正常捕获。
+# 【原理】1. click @ref 聚焦 select 并展开 OS 原生菜单（不可避免）；
+#         2. 菜单展开态方向键只移动高亮不改值（平台实测），press Enter
+#            确认当前高亮项并关菜单，恢复非展开态（焦点仍在 select）；
+#         3. 先取目标选项的 selectedIndex（文本 base64 传入全等匹配），
+#            非展开态按 index 差值双向移动（ArrowDown/ArrowUp，真实
+#            键盘事件）直至 selectedIndex 相等——勿假定单向：默认选中
+#            项可能在目标之后（005 实测角色下拉默认末项"只读用户"）。
+# 【参数】$1 = ref（原生 select 元素）；$2 = 选项文本；$3 = 说明（可选）
+# 【返回】0 = 已选中目标；1 = 轮询 40 次未命中（调用方决定是否硬失败）
+# 【注意】eval 输出 JSON 字符串带引号需剥壳；activeElement 非 select 时
+#         selectedOptions 为空 → 比对恒失败，40 次后超时返回 1
+select_by_keyboard() {  # $1=ref $2=选项文本 $3=说明(可选)
+    local b64 idx cur_idx k cur
+    agent-browser click "@${1}" >/dev/null 2>&1
+    ab_wait 400
+    agent-browser press Enter >/dev/null 2>&1   # 关菜单回到非展开态（保留焦点）
+    ab_wait 400
+    # 目标选项定位：selectedIndex 全等匹配（文本经 base64 传入 JS；
+    # eval 字符串结果已由 agent-browser 做 JSON 包装，输出用 sed 剥壳）
+    # 【勿假定方向】默认选中项可能在目标之后（005 实测：角色下拉默认
+    # "只读用户"为末项，从末项 ArrowDown 无处可走——按 index 差值
+    # 精确选择方向，ArrowDown/ArrowUp 双向移动）
+    b64=$(_b64 "$2")
+    idx=$(agent-browser eval "(()=>{const e=document.activeElement;if(!e||e.tagName!=='SELECT')return -1;const t=new TextDecoder().decode(Uint8Array.from(atob('${b64}'),c=>c.charCodeAt(0)));return [...e.options].findIndex(o=>o.text===t)})()" 2>/dev/null \
+        | sed -e 's/^"//' -e 's/"$//')
+    case "$idx" in
+        -1|'') echo "  [失败] 目标选项不在下拉中（或焦点已丢失）: $2${3:+（$3）}" >&2; return 1;;
+    esac
+    for ((k = 0; k < 40; k++)); do
+        cur_idx=$(agent-browser eval "document.activeElement.selectedIndex" 2>/dev/null | tr -d '"')
+        case "$cur_idx" in
+            ''|*[!0-9-]*) echo "  [失败] 无法读取下拉当前选项位置${3:+（$3）}" >&2; return 1;;
+        esac
+        [ "$cur_idx" = "$idx" ] && { ab_wait 300; return 0; }
+        if [ "$cur_idx" -lt "$idx" ]; then
+            agent-browser press ArrowDown >/dev/null 2>&1
+        else
+            agent-browser press ArrowUp >/dev/null 2>&1
+        fi
+        ab_wait 250
+    done
+    # 末次复核（index 轮询超时兜底：直接比对选中文本）
+    cur=$(agent-browser eval "(()=>{const e=document.activeElement;try{return e.selectedOptions[0].text}catch(x){return ''}})()" 2>/dev/null \
+        | sed -e 's/^"//' -e 's/"$//' -e 's/\\"/"/g')
+    [ "$cur" = "$2" ] && return 0
+    echo "  [失败] 键盘下拉选择未命中: $2${3:+（$3）}" >&2
+    return 1
+}
+
+# click_overlay_node — 浮层内节点 JS 精确匹配点击（005 实践沉淀）
+# 【用途】浮层（弹窗/抽屉/搜索树）内选项节点的点击兜底：浮层元素 @ref 点击
+#         可能报 CDP box model 错误（平台特性 5，浮层渲染坐标失效），改 JS
+#         textContent 全等匹配 + el.click() 绕过坐标命中测试。
+# 【原理】两级范围查找（005 实测：组织浮层搜索树渲染为 body 下 Popover，
+#         挂在 dialog 容器外、且树节点为 button 角色而非 treeitem——
+#         只查 dialog 内会恒 noel）：先 [role=dialog]/[role=modal]/dialog
+#         容器内、再全页，按 treeitem/option/listitem → button/a 两级
+#         候选精确文本匹配；均未命中时点击全部可见 aria-label=Expand
+#         展开钮（树懒加载子节点折叠时目标不在 DOM，展开后下轮重试）。
+# 【参数】$1 = 节点精确文本；$2 = 轮询次数（默认 8）；$3 = 间隔毫秒（默认 500）
+# 【返回】0 = 点击成功；1 = 轮询超时未命中
+# 【注意】本函数恒取首个精确命中；同文本歧义节点需调用方自行收敛范围
+click_overlay_node() {  # $1=节点精确文本 $2=轮询次数(默认8) $3=间隔ms(默认500)
+    local i res
+    local jscode
+    jscode=$(printf '(()=>{const t=new TextDecoder().decode(Uint8Array.from(atob("%s"),c=>c.charCodeAt(0)));const vis=e=>e.offsetParent!==null;const txt=e=>(e.textContent||"").trim();const tryClick=(roots,sel)=>{for(const root of roots){const cand=[...root.querySelectorAll(sel)].filter(e=>vis(e)&&txt(e)===t);if(cand.length){cand[0].click();return true}}return false};const dlg=[...document.querySelectorAll("[role=dialog],[role=modal],dialog")].filter(vis);for(const roots of [dlg,[document]]){if(tryClick(roots,"[role=treeitem],[role=option],[role=listitem]"))return "ok";if(tryClick(roots,"button,a"))return "ok"}const exp=[...document.querySelectorAll("button")].filter(e=>vis(e)&&(e.getAttribute("aria-label")||"").trim()==="Expand");if(exp.length){exp.forEach(e=>e.click());return "expanded"}return "noel"})()' "$(_b64 "$1")")
+    for ((i = 0; i < ${2:-8}; i++)); do
+        res=$(agent-browser eval "$jscode" 2>/dev/null)
+        case "$res" in
+            *ok*) ab_wait 500; return 0;;
+        esac
+        ab_wait "${3:-500}"
+    done
+    return 1
+}
+
+# select_option_by_ref — 无标签下拉两步法（ref 已知版，005 实践沉淀）
+# 【用途】触发器无标签文案（如"未绑定组织"占位按钮 + 浮层搜索树）时的选择：
+#         点触发器展开浮层 → 快照点选项；@ref 点击报 CDP box model 错误或
+#         目标不在快照（树折叠/Popover 挂 body）时，自动退化 click_overlay_node
+#         （JS 精确匹配 + 展开重试，覆盖树折叠懒加载场景）。
+# 【参数】$1 = 触发器 ref（eN）；$2 = 选项文本；$3 = 说明（可选）
+# 【返回】0 = 选择完成；1 = 两级路径均失败
+# 【示例】org_btn=$(ref_by_text '未绑定组织') \
+#         && select_option_by_ref "$org_btn" "$NEW_USER_ORG" '组织绑定'
+select_option_by_ref() {  # $1=触发器ref $2=选项文本 $3=说明(可选)
+    local pat o
+    agent-browser click "@${1}" >/dev/null
+    ab_wait 800
+    # 005 实测：组织浮层树节点渲染为 button 角色（非 option/listitem/treeitem），
+    # 匹配角色集须含 button（树节点）与 option/listitem/treeitem（常规浮层选项）
+    pat=$(_ere_escape "$2")
+    o=$(extract_ref "$(snap_i)" "- (option|listitem|treeitem|button) \"[^\"]*${pat}\"")
+    if [ -n "$o" ]; then
+        agent-browser click "@${o}" >/dev/null 2>&1 && { ab_wait 500; return 0; }
+    fi
+    # 浮层 @ref 点击失败（CDP box model 错误）/ 目标不在快照（树折叠）→ JS 兜底
+    click_overlay_node "$2" 12 500 && { ab_wait 500; return 0; }
+    echo "  [失败] 下拉选项选择失败: $2${3:+（$3）}" >&2
+    return 1
+}
+
 # ---------------------------------------------------------------------------
 # 6. 上传 / 取值
 # ---------------------------------------------------------------------------
@@ -890,6 +1012,54 @@ cell_after() {  # $1=特征 cell 文本 $2=向后跳过数(默认1)
         index($0, "cell \"" feat "\"") { found = 1; s = skip; next }
         found && /cell "/ { if (s > 0) { s--; next } print; exit }
     '
+}
+
+# ---------------------------------------------------------------------------
+# 7c. 批次实例顺延（同批次执行期防重名自愈，2026-11-19 规则修订）
+# 规则出处：generate-test-data.md §2.3-7——创建类批次实例在平台已存在时，
+# 实例序号 +1 顺延（T001_USER01@asdm.ai → T001_USER02@asdm.ai → …）直至
+# 空闲序号，不换批次号、不终止回放；顺延仅作用于执行期创建值（批内追加
+# 实例），test-data.sh 静态快照与刷新求值不变——赋值规则为纯静态求值体系，
+# 不依赖任何运行期落盘产物（§2.3-7 对齐口径）。
+# ---------------------------------------------------------------------------
+
+# bump_batch_seq — 批次实例序号顺延原语
+# 【用途】把"批次号_类别词+两位序号[后缀]"格式的批次实例序号 +1：
+#         T001_USER01@asdm.ai → T001_USER02@asdm.ai、
+#         T001_PAT01 → T001_PAT02、T001_组织01 → T001_组织02（类别词支持中文）。
+# 【参数】$1 = 批次实例值
+# 【输出】stdout = 顺延后的值（格式不匹配时无输出）
+# 【返回】0 = 顺延成功；1 = 非"批次号_类别词+序号"格式（调用方决定处理）
+# 【注意】序号按十进制 +1（09 → 10 跨八进制陷阱已用 10# 前缀规避；
+#         99 → 100 自然扩展三位）；顺延目标序号与登记表既占序号的冲突
+#         由调用方核对（§2.3-7，如组织类 02 已被 SUB_ORG_NAME 占用）。
+bump_batch_seq() {  # $1=批次实例值 → stdout=顺延值
+    local v="$1"
+    if [[ "$v" =~ ^(T[0-9]{3}_[^0-9]+)([0-9]+)(.*)$ ]]; then
+        printf '%s%02d%s\n' "${BASH_REMATCH[1]}" "$((10#${BASH_REMATCH[2]} + 1))" "${BASH_REMATCH[3]}"
+        return 0
+    fi
+    return 1
+}
+
+# list_has_record — 列表记录存在性检查（顺延/幂等前置）
+# 【用途】创建类脚本录入前的平台重名检查（§2.3-7 顺延循环的判定原语）：
+#         列表搜索过滤后以 cell 精确匹配判定目标记录是否已存在。
+# 【原理】search_and_filter 完成过滤（成功/超时均返回 0，不可凭返回码判定），
+#         再取快照做 cell 全等匹配——精确匹配防前缀误判（如
+#         T001_USER01 与 T001_USER01v2 同屏时，01 检查不被 v2 干扰）。
+# 【参数】$1 = 特征文本（如完整邮箱）
+# 【返回】0 = 记录已存在（顺延）；1 = 不存在（可直接使用）
+# 【耗时】记录不存在时内部搜索轮询跑满约 15s，调用方无须额外等待
+# 【示例】while list_has_record "$email"; do email=$(bump_batch_seq "$email"); done
+list_has_record() {  # $1=特征文本 → 0=已存在 1=不存在
+    local snap
+    search_and_filter "$1" >/dev/null 2>&1
+    snap=$(snap_i)
+    case "$snap" in
+        *"cell \"$1\""*) return 0;;
+        *) return 1;;
+    esac
 }
 
 # ---------------------------------------------------------------------------

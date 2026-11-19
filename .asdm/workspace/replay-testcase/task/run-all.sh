@@ -8,16 +8,18 @@
 # 【布局适配】当前布局：脚本集中放 replay_testcase/ 子目录（文件名 <slug>.sh，
 #  无 replay_testcase_ 前缀），公共库放 common/common.sh。
 #  脚本定位：${ROOT_DIR}/replay_testcase/<slug>.sh；目录布局变更时需重新生成。
-# 【身份切换】本批 4 个任务全部以 super-admin 身份执行（脚本 require_vars 均为
+# 【身份切换】本批 5 个任务全部以 super-admin 身份执行（脚本 require_vars 均为
 #  ASDM_USER/ASDM_PASS，无内置身份切换）；如需覆盖账号以 ASDM_USER/ASDM_PASS
 #  环境变量传入（load 时环境变量优先）。
-# 【编号说明】本批现役脚本 4 个（001~004），无重号编号；005 及后续编号脚本
-#  不在现役 replay_testcase/ 目录（test-data.sh 与登记表仍保留其变量定义，
-#  属数据域超集，不影响本批执行）；脚本集合恢复时重新生成本脚本。
+# 【编号说明】本批现役脚本 5 个（001~005）；006 及后续编号脚本不在现役
+#  replay_testcase/ 目录（test-data.sh 与登记表仍保留其变量定义，
+#  属数据域超集，不影响本批执行）；脚本集合变化时重新生成本脚本。
 # 【豁免机制】EXEMPT_RULES 中任务若对应变量为空或含 PLACEHOLDER 占位符特征，
 #  判定为豁免-缺外部数据，跳过执行并留痕（test-plan.md §六）。
-# 【本批状态】BATCH_ID=T001 批次下：4 个任务的必需变量（ASDM_USER/ASDM_PASS/
-#  ORG_NAME/PARENT_ORG/SUB_ORG_NAME）均为非空非占位符真实值 → 本批无豁免任务，
+# 【本批状态】BATCH_ID=T001 批次下：5 个任务的必需变量（ASDM_USER/ASDM_PASS/
+#  ORG_NAME/PARENT_ORG/SUB_ORG_NAME/NEW_USER_EMAIL/NEW_USER_PASS/
+#  NEW_USER_LAST/NEW_USER_FIRST/NEW_USER_ROLE/NEW_USER_ORG）均为非空非占位符
+#  真实值 → 本批无豁免任务，
 #  EXEMPT_RULES 为空（保留判定逻辑：后续批次 GH_TOKEN 等占位变量对应任务加入
 #  TASKS 后，按 test-plan.md §六 回填规则即可，无需重新生成本脚本）。
 #  另注：T001 批次创建类数据（T001_组织01/组织02）已于上轮回放在平台落库，
@@ -63,6 +65,7 @@ TASKS=(
   002_access-asdm
   003_create-org
   004_create-sub-org
+  005_create-org-manager
 )
 
 # 依赖表：元素 "任务slug|前置1 前置2 …"（前置取自
@@ -73,10 +76,11 @@ DEPS=(
   "002_access-asdm|001_system-login"
   "003_create-org|001_system-login"
   "004_create-sub-org|001_system-login 003_create-org"
+  "005_create-org-manager|001_system-login 003_create-org 004_create-sub-org"
 )
 
 # EXEMPT_RULES：<任务slug|变量>（键必须与 TASKS 项一致），变量为空或含占位符特征则豁免
-# 本批（T001）4 个任务必需变量均为非空非占位符真实值 → 无豁免任务，规则集为空；
+# 本批（T001）5 个任务必需变量均为非空非占位符真实值 → 无豁免任务，规则集为空；
 # 后续批次如出现占位变量任务（如 GH_TOKEN 类），按 test-plan.md §六 回填
 # "任务slug|变量" 条目即可（重新生成本脚本时需回填此批说明）
 EXEMPT_RULES=()
