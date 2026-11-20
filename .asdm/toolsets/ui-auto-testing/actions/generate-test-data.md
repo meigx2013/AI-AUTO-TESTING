@@ -140,7 +140,7 @@ test-data.sh 现行字面值）；"初始值"列 = **用例原文**（回溯锚�
 | `NEW_USER_PASS` | 固定值 | `admin@2026` | `admin@2026`（005 同一输入） | `ref:TEST01_PASS` | 005 | 字面 = `TEST01_PASS`（§三 对齐表下游侧） |
 | `NEW_USER_ROLE` | 固定值 | `组织管理员` | `组织管理员`（005 下拉原文） | `fixed:组织管理员` | 005 | 角色映射：角色 |
 | `NEW_USER_LAST` | 固定值 | `测试` | `测试`（005 原文） | `fixed:测试` | 005 | 新用户姓 |
-| `NEW_USER_FIRST` | 固定值 | `一` | `一`（005 原文） | `fixed:一` | 005 | 新用户名 |
+| `NEW_USER_FIRST` | 固定值 | `01` | `一`（005 原文） | `fixed:01` | 005 | 新用户名；人工改动 2026-11-20：值由 `一` 改为 `01`（回填规则列生效，初始值列保持用例原文锚点不动） |
 
 **脚本级**（经环境变量可覆盖，test-data.sh 未定义；**现行 0 条**，不参与刷新，规则列仅语义标注）：
 历史 8 条（`PAT`、`JENKINSFILE_SPACE_SYNC`、`JENKINSFILE_WORKSPACE_EXEC`、
@@ -449,7 +449,7 @@ bash -c 'source data/test-data.sh' && cp data/test-data.sh /tmp/td.1 && <再次�
 : "${NEW_USER_PASS:=admin@2026}"                  # 固定值（=TEST01_PASS）
 # 初始值(用例输入): 测试              赋值规则: fixed
 : "${NEW_USER_LAST:=测试}"                         # 新用户姓
-# 初始值(用例输入): 01               赋值规则: fixed
+# 初始值(用例输入): 一（005 原文）  赋值规则: fixed:01（人工改动 2026-11-20：一→01）
 : "${NEW_USER_FIRST:=01}"                          # 新用户名
 ```
 

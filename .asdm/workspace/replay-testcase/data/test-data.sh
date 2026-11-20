@@ -6,7 +6,7 @@
 #         不含运行时生成逻辑；需要新数据时（换批次号）执行
 #         .asdm/toolsets/ui-auto-testing/actions/generate-test-data.md 重新生成
 #         （按登记表"赋值规则"列对全部定义域变量整体重写）。
-# 【数据批次】BATCH_ID=T001（2026-11-06）
+# 【数据批次】BATCH_ID=T001（2026-11-20）
 # 【加载】测试脚本统一加载（common/common.sh 的 load_data_file）：
 #         DATA_DIR="${SCRIPT_DIR}/../data"; load_data_file "${DATA_DIR}/test-data.sh"
 #         （脚本在 replay_testcase/ 子目录，公共库在 common/，两者同级的 ../data 即本目录）
@@ -59,8 +59,8 @@
 : "${NEW_USER_PASS:=admin@2026}"                   # 新用户初始密码（=TEST01_PASS）
 # 初始值(用例输入): 测试（005 原文）  赋值规则: fixed:测试
 : "${NEW_USER_LAST:=测试}"                          # 新用户姓
-# 初始值(用例输入): 一（005 原文）  赋值规则: fixed:一
-: "${NEW_USER_FIRST:=一}"                           # 新用户名
+# 初始值(用例输入): 一（005 原文）  赋值规则: fixed:01（人工改动 2026-11-20：一→01）
+: "${NEW_USER_FIRST:=01}"                           # 新用户名
 
 export BASE_URL HEADED \
        ASDM_USER ASDM_PASS TEST01_USER TEST01_PASS \

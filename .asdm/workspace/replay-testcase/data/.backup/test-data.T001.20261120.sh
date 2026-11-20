@@ -12,21 +12,27 @@
 #         （脚本在 replay_testcase/ 子目录，公共库在 common/，两者同级的 ../data 即本目录）
 # 【优先级】环境变量 > 本文件（: "${VAR:=...}" 仅当变量未设置时才赋值）
 # 【分节】公共配置 → 身份凭据 → 各用例业务数据（按用例编号）
+# 【裁剪记录 2026-11-20】现役脚本集为 001~005 五个脚本，本文件与登记表同步裁剪：
+#         仅保留 5 脚本关联变量（require_vars 直接消费 + common.sh 消费 +
+#         ref 链目标锚点）共 15 个；006~099 用例相关 44 个变量已随登记表条目
+#         一并移除。后续用例脚本恢复时按 testcase-to-sh.md §五
+#         "提取 → 登记 → 追加"三步走重新登记并入。
 # ============================================================================
 
 # ---------- 公共配置（所有用例共享） ----------
-# 初始值(用例输入): https://asdm-sit.leansoftx.com/（001 原文）  赋值规则: fixed:https://asdm-sit.leansoftx.com/
-: "${BASE_URL:=https://asdm-sit.leansoftx.com/}"   # 平台首页地址
+# 初始值(用例输入): https://asdm-sit.leansoftx.com/（001 原文）  赋值规则: fixed:https://asdm-dt01.leansoftx.com/（sit→dt01 环境迁移，规则显式当前值防求值回退）
+: "${BASE_URL:=https://asdm-dt01.leansoftx.com/}"   # 平台首页地址
 # 初始值(用例输入): （缺）（公共配置无用例原文）  赋值规则: fixed:1
 : "${HEADED:=1}"                                   # 1=显示浏览器窗口，0=无头模式
 
 # ---------- 身份凭据 ----------
-# 超级管理员（001-009、012 用例登录用）
+# 超级管理员（001~005 现役全部用例登录用）
 # 初始值(用例输入): super-admin@asdm.ai（001 原文）  赋值规则: env:super-admin@（非占位态原样保留）
 : "${ASDM_USER:=super-admin@asdm.ai}"              # 超级管理员邮箱
 # 初始值(用例输入): superadmin@20260214（001 原文）  赋值规则: env:superadmin@（非占位态原样保留）
 : "${ASDM_PASS:=superadmin@20260214}"              # 超级管理员密码
-# test01（010-011 用例登录用，005 用例创建的用户）
+# test01（005 用例创建的用户；NEW_USER_EMAIL/NEW_USER_PASS 的 ref 目标锚点，
+# 010/011 脚本恢复后登录复用）
 # 初始值(用例输入): test01@asdm.ai（005 原文）  赋值规则: （空，批次兜底：批次号_USER+序号01）
 : "${TEST01_USER:=T001_USER01@asdm.ai}"            # test01 邮箱
 # 初始值(用例输入): admin@2026（005"初始密码"原文）  赋值规则: fixed:admin@2026
@@ -48,196 +54,15 @@
 # 初始值(用例输入): 测试组织01（005 原文）  赋值规则: ref:SUB_ORG_NAME（批次对齐决断：004 产物）
 : "${NEW_USER_ORG:=T001_组织02}"                   # 角色映射：组织（=用例004产物，引用组织02）
 # 初始值(用例输入): test01@asdm.ai（005 同一输入）  赋值规则: ref:TEST01_USER
-: "${NEW_USER_EMAIL:=T001_USER01@asdm.ai}"         # 新用户邮箱（=TEST01_USER，010 用例登录复用）
+: "${NEW_USER_EMAIL:=T001_USER01@asdm.ai}"         # 新用户邮箱（=TEST01_USER）
 # 初始值(用例输入): admin@2026（005 同一输入）  赋值规则: ref:TEST01_PASS
-: "${NEW_USER_PASS:=admin@2026}"                   # 新用户初始密码（=TEST01_PASS，010 用例登录复用）
+: "${NEW_USER_PASS:=admin@2026}"                   # 新用户初始密码（=TEST01_PASS）
 # 初始值(用例输入): 测试（005 原文）  赋值规则: fixed:测试
 : "${NEW_USER_LAST:=测试}"                          # 新用户姓
 # 初始值(用例输入): 一（005 原文）  赋值规则: fixed:一
 : "${NEW_USER_FIRST:=一}"                           # 新用户名
 
-# ---------- 用例 006：生成 PAT ----------
-# 初始值(用例输入): （缺）（006 不在仓）  赋值规则: （空，批次兜底：批次号_PAT+序号01）
-# 【平台约束】名称输入框 maxlength=64；平台对令牌名称唯一性校验，
-#            同名创建返回 409（脚本内置同名清理，见 006 脚本 §step 3.5）
-: "${PAT_NAME:=T001_PAT01}"                        # 令牌名称
-# 初始值(用例输入): （缺）（006 不在仓）  赋值规则: fixed:30 天
-: "${PAT_EXPIRY:=30 天}"                          # 令牌有效期（选项文本带空格）
-
-# ---------- 用例 007：流水线配置（名称类仅 PIPELINE_NAME，其余见登记表 §1.11） ----------
-# Jenkins sit 环境账号/地址：登录凭证与 JENKINS_CRED 一致
-# 初始值(用例输入): （缺）（007 不在仓）  赋值规则: fixed:https://platform-sit01.asdm.ai/_jenkins
-: "${JENKINS_URL:=https://platform-sit01.asdm.ai/_jenkins}"   # Jenkins 地址（sit）
-# 初始值(用例输入): （缺）（007 不在仓）  赋值规则: fixed:admin
-: "${JENKINS_USER:=admin}"                                    # Jenkins 登录账号
-# 初始值(用例输入): （缺）（007 不在仓）  赋值规则: fixed:（现值，敏感不入注释）
-: "${JENKINS_PASS:=AsdmJenkins2025}"                          # Jenkins 登录密码
-# 初始值(用例输入): pipeline（历史固定值，007 文档可考）  赋值规则: batch（语义变更：固定值→批次实例）
-# 幂等守卫"同名跳过"随批次名每批真实执行创建；平台级设置残留按 T0xx_ 前缀辨识清理
-: "${PIPELINE_NAME:=T001_流水线01}"                # 流水线配置名称（流水线01）
-# 初始值(用例输入): （缺）（007 不在仓）  赋值规则: env（非占位态原样保留）
-: "${JENKINS_CRED:=admin:11f054f0964f8cb86a627b296929b9df59}"   # Jenkins 凭证
-# ASDM API PAT 不在此硬编码：由脚本从 data/pat.txt（006 用例产出）读取，或传入 PAT=...
-
-# ---------- 用例 008：特性开关 ----------
-# 初始值(用例输入): （缺）（008 不在仓）  赋值规则: fixed:hide_admin_resource_management minio_storage_enabled hide_mcp_management
-# 待处理的特性开关列表（空格分隔）
-: "${FEATURE_FLAGS:=hide_admin_resource_management minio_storage_enabled hide_mcp_management}"
-# 初始值(用例输入): （缺）（008 不在仓）  赋值规则: fixed:全量开放
-: "${FLAG_STATUS:=全量开放}"                        # 目标状态
-
-# ---------- 用例 009：资源管理 ----------
-# 初始值(用例输入): （缺）（009 不在仓）  赋值规则: fixed:全局
-: "${RES_SCOPE:=全局}"                              # 上传范围
-# 初始值(用例输入): （缺）（009 不在仓）  赋值规则: fixed:场景智能体
-: "${RES_TYPE:=场景智能体}"                         # 资源类型
-# 初始值(用例输入): （缺）（009 不在仓）  赋值规则: fixed:上下文管理
-: "${RES_CATEGORY:=上下文管理}"                     # 分类
-# 初始值(用例输入): （缺）（009 不在仓；用例原文 Windows 路径 D:\TEST01\toolset 可考、回放环境不可用）
-# 赋值规则: fixed:${DATA_DIR}/context-builder-8.zip（字面含 ${DATA_DIR} 为既有形态，加载期展开）
-# 待上传文件绝对路径，默认指向 data/ 下生成的场景智能体示例包，可用 UPLOAD_FILE=... 覆盖
-: "${UPLOAD_FILE:=${DATA_DIR}/context-builder-8.zip}"
-
-# ---------- 用例 010：创建项目 ----------
-# 初始值(用例输入): （缺）（010 不在仓）  赋值规则: ref:SUB_ORG_NAME（004 产物，引用组织02）
-: "${ORG_NODE:=T001_组织02}"                       # 目标组织节点（=用例004产物，引用组织02）
-# 初始值(用例输入): （缺）（010 不在仓）  赋值规则: （空，批次兜底：批次号_项目+序号01）
-# 项目名称：批次实例（登记表 §1.4，项目01）；T001_项目01 共 8 字符 ≤ 平台 20 字符上限
-: "${PROJECT_NAME:=T001_项目01}"                   # 项目名称（批次实例，8 字符 ≤ 20 上限）
-
-# ---------- 用例 011：项目配置 ----------
-# 初始值(用例输入): （缺）（011 不在仓）  赋值规则: fixed:https://github.com/meigx2013/Ai-Fast
-: "${REPO_URL:=https://github.com/meigx2013/Ai-Fast}"       # 仓库 URL
-# 初始值(用例输入): （缺）（011 不在仓）  赋值规则: fixed:develop
-: "${REPO_BRANCH:=develop}"                                 # 仓库分支
-# GitHub Token：用例原文为占位符 ghp_xxx，必须覆盖为真实 Token（test-data.sh 或 GH_TOKEN=...）
-# 初始值(用例输入): （缺）（011 不在仓）  赋值规则: fixed:meigx2013/Ai-Fast
-: "${REPO_NAME:=meigx2013/Ai-Fast}"                    # 仓库名称/路径
-# 初始值(用例输入): ghp_xxx（011 用例原文即占位符，可考）  赋值规则: env:ghp_（占位态保持）
-: "${GH_TOKEN:=ghp_xxx}"   # GitHub Token（占位符：执行前用 GH_TOKEN=... 环境变量注入真实值，勿提交真实 Token）
-
-# ---------- 用例 012：创建智能体空间 ----------
-# 初始值(用例输入): （缺）（012 不在仓）  赋值规则: （空，批次兜底：批次号_智能体空间+序号01）
-: "${WORKSPACE_NAME:=T001_智能体空间01}"
-# 初始值(用例输入): （缺）（012 不在仓；用例原文"普通"失配）  赋值规则: fixed:普通类
-: "${WORKSPACE_TYPE:=普通类}"
-# 初始值(用例输入): （缺）（012 不在仓）  赋值规则: fixed:好好工作
-: "${WORKSPACE_DESC:=好好工作}"
-
-# ---------- 用例 013：智能体空间资源关联 ----------
-# 关联目标 = 009 上传的场景智能体资源（资源名 = UPLOAD_FILE 文件名，字面对齐）
-# 无新增变量，复用 UPLOAD_FILE
-
-# ---------- 用例 014：触发空间运行 ----------
-# 初始值(用例输入): （缺）（014 不在仓）  赋值规则: fixed:生成README.md到 .workspace 目录下。
-: "${RUN_PROMPT:=生成README.md到 .workspace 目录下。}"
-
-# ---------- 用例 015：新建知识空间 ----------
-# 初始值(用例输入): （缺）（015 不在仓）  赋值规则: （空，批次兜底：批次号_知识空间+序号01）
-: "${KNOWLEDGE_NAME:=T001_知识空间01}"
-# 初始值(用例输入): （缺）（015 不在仓）  赋值规则: fixed:努力挣钱
-: "${KNOWLEDGE_DESC:=努力挣钱}"
-
-# ---------- 用例 016：添加知识源 ----------
-# 场景智能体下拉选项文本 = "资源名 (版本)"格式（版本号浮动）——按资源名前缀匹配
-# 场景智能体须与 009 实际上传的 UPLOAD_FILE 字面对齐；命令 = asdm-context-build
-# （该包 actions/asdm-context-build.md，与用例原文一致）
-# 初始值(用例输入): （缺）（016 不在仓）  赋值规则: fixed:单步自动化构建
-: "${CONTEXT_BUILD_MODE:=单步自动化构建}"
-# 初始值(用例输入): （缺）（016 不在仓）  赋值规则: （空，批次兜底：批次号_知识源+序号01）
-: "${CONTEXT_SOURCE_NAME:=T001_知识源01}"
-# 初始值(用例输入): （缺）（016 不在仓）  赋值规则: fixed:https://github.com/meigx2013/asdm-core-assets-mcp
-: "${CONTEXT_REPO_URL:=https://github.com/meigx2013/asdm-core-assets-mcp}"
-# 初始值(用例输入): context-builder-8.zip（现行值可考）  赋值规则: fixed:context-builder-8.zip（= UPLOAD_FILE 文件名锚点，更名须同步）
-: "${CONTEXT_AGENT:=context-builder-8.zip}"
-# 初始值(用例输入): （缺）（016 不在仓）  赋值规则: fixed:asdm-context-build
-: "${CONTEXT_CMD:=asdm-context-build}"
-
-# ---------- 用例 019：hide_digidev_icon 特性开关 ----------
-# 初始值(用例输入): （缺）（019 不在仓）  赋值规则: fixed:hide_digidev_icon
-: "${HIDE_DIGIDEV_FLAG:=hide_digidev_icon}"          # 目标特性开关（状态复用 FLAG_STATUS）
-
-# ---------- 用例 020：ASDM-Org Agent 设置（现存组织代跑） ----------
-# 用例原文组织 "ASDM-Org" 在当前平台不存在，以本批顶层组织代跑（=ORG_NAME 值，引用组织01）；
-# 平台创建 ASDM-Org 后可 ASDM_ORG_NAME=ASDM-Org 覆盖
-# 初始值(用例输入): （缺，原文"ASDM-Org"平台不存在）  赋值规则: ref:ORG_NAME（引用组织01）
-: "${ASDM_ORG_NAME:=T001_组织01}"
-
-# ---------- 用例 021：organization Agent 配置（现存组织代跑） ----------
-# 同 020："organization"/"AI开发运维板块" 均不在当前平台组织树，
-# 以本批顶层组织代跑验证流程（=ORG_NAME 值，引用组织01）；平台创建 organization 后可覆盖
-# 初始值(用例输入): （缺，原文"organization"平台不存在）  赋值规则: ref:ORG_NAME（引用组织01）
-: "${ORG_CONFIG_NAME:=T001_组织01}"
-
-# ---------- 用例 022：创建个人数字分身 ----------
-# 初始值(用例输入): （缺）（022 不在仓）  赋值规则: （空，批次兜底：批次号_分身+序号01）
-: "${AVATAR_NAME:=T001_分身01}"
-# AgentOrbit 连接密钥（外部凭据类，登记表 §1.11）：数字分身为 AgentOrbit 在线能力，
-# 未配置时 [创建新分身] 按钮禁用——留空则 run-all.sh 豁免 022（§九）；
-# 平台级设置 → AgentOrbit 页签配置密钥并保存后，可将密钥写入此变量解除豁免
-# 初始值(用例输入): （缺）（018/022/023 不在仓）  赋值规则: env（非占位态原样保留）
-: "${AGENT_ORBIT_KEY:=4dd99ff9-5b0c-4742-87a1-228760dd96de}"
-
-# ---------- 用例 018：AgentOrbit 连接配置 ----------
-# 无新增变量：连接密钥复用 022 的 AGENT_ORBIT_KEY（外部凭据类，登记表 §1.11）——
-# 018 配置写入密钥并保存后，022/023 的豁免即可同步解除（同一变量对齐链）
-
-# ---------- 用例 023：数字分身创建成功 ----------
-# 初始值(用例输入): （缺）（023 不在仓）  赋值规则: （空，批次兜底：批次号_分身+序号02；与 022 为两个分身）
-: "${DIGITAL_AVATAR_NAME:=T001_分身02}"
-
-# ---------- 用例 024：创建在线智能体空间（挂链 010 项目） ----------
-# 初始值(用例输入): （缺）（024 不在仓）  赋值规则: （空，批次兜底：批次号_智能体空间+序号02）
-: "${ONLINE_WORKSPACE_NAME:=T001_智能体空间02}"
-# 类型下拉实际选项仅 CODE"代码类" / NORMAL"普通类"——用例原文 [在线] 选项
-# 不存在（"在线"为组织 Agent 设置层的功能概念，非空间类型枚举）；以"普通类"
-# 代跑验证创建流程（差异记入 test-plan §七）
-# 初始值(用例输入): （缺）（024 不在仓；用例原文"在线"失配）  赋值规则: fixed:普通类
-: "${ONLINE_WORKSPACE_TYPE:=普通类}"
-
-# ---------- 用例 025/026：在线知识空间与多步构建（挂链 010 项目） ----------
-# 026 复用 025 的同名字面数据进入，不重复创建
-# 构建模式为 radio 单选组，实际选项文本为"多步交互构建"（用例原文 [多步构建]，
-# 差异记录 test-plan §七）
-# 初始值(用例输入): （缺）（025 不在仓）  赋值规则: （空，批次兜底：批次号_知识空间+序号02）
-: "${ONLINE_KNOWLEDGE_NAME:=T001_知识空间02}"
-# 初始值(用例输入): （缺）（025 不在仓）  赋值规则: fixed:在线
-: "${ONLINE_KNOWLEDGE_TYPE:=在线}"
-# 初始值(用例输入): （缺）（025 不在仓；用例原文"多步构建"失配）  赋值规则: fixed:多步交互构建
-: "${MULTI_CONTEXT_BUILD_MODE:=多步交互构建}"
-# 初始值(用例输入): （缺）（025 不在仓）  赋值规则: （空，批次兜底：批次号_知识源+序号02）
-: "${MULTI_CONTEXT_NAME:=T001_知识源02}"
-
-# ---------- 用例 099：效能洞察 ----------
-# 项目管理员凭据（外部凭据类，登记表 §1.11）：未配置时脚本内置豁免逻辑跳过验证；
-# 创建项目管理员用户后可将邮箱/密码写入此变量解除豁免
-# 初始值(用例输入): （缺）（099 不在仓）  赋值规则: env（空占位保持）
-: "${PROJECT_ADMIN_USER:=}"                        # 项目管理员邮箱（占位，环境变量覆盖）
-# 初始值(用例输入): （缺）（099 不在仓）  赋值规则: env（空占位保持）
-: "${PROJECT_ADMIN_PASS:=}"                        # 项目管理员密码（占位，环境变量覆盖）
-
 export BASE_URL HEADED \
        ASDM_USER ASDM_PASS TEST01_USER TEST01_PASS \
        ORG_NAME PARENT_ORG SUB_ORG_NAME \
-       NEW_USER_ROLE NEW_USER_ORG NEW_USER_EMAIL NEW_USER_PASS NEW_USER_LAST NEW_USER_FIRST \
-       PAT_NAME PAT_EXPIRY \
-       JENKINS_URL JENKINS_USER JENKINS_PASS \
-       PIPELINE_NAME JENKINS_CRED \
-       FEATURE_FLAGS FLAG_STATUS \
-       RES_SCOPE RES_TYPE RES_CATEGORY UPLOAD_FILE \
-       ORG_NODE PROJECT_NAME \
-       REPO_URL REPO_NAME REPO_BRANCH GH_TOKEN \
-       WORKSPACE_NAME WORKSPACE_TYPE WORKSPACE_DESC \
-       RUN_PROMPT \
-       KNOWLEDGE_NAME KNOWLEDGE_DESC \
-       CONTEXT_BUILD_MODE CONTEXT_SOURCE_NAME CONTEXT_REPO_URL CONTEXT_AGENT CONTEXT_CMD \
-       HIDE_DIGIDEV_FLAG \
-       ASDM_ORG_NAME \
-       ORG_CONFIG_NAME \
-       AVATAR_NAME \
-       AGENT_ORBIT_KEY \
-       DIGITAL_AVATAR_NAME \
-       ONLINE_WORKSPACE_NAME ONLINE_WORKSPACE_TYPE \
-       ONLINE_KNOWLEDGE_NAME ONLINE_KNOWLEDGE_TYPE \
-       MULTI_CONTEXT_BUILD_MODE MULTI_CONTEXT_NAME \
-       PROJECT_ADMIN_USER PROJECT_ADMIN_PASS
+       NEW_USER_ROLE NEW_USER_ORG NEW_USER_EMAIL NEW_USER_PASS NEW_USER_LAST NEW_USER_FIRST
