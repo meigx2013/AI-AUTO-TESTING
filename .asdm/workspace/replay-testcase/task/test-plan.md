@@ -83,18 +83,19 @@
 | 无 | — | 本批次 5 个任务全部必需变量（ASDM_USER/ASDM_PASS/ORG_NAME/PARENT_ORG/SUB_ORG_NAME/NEW_USER_EMAIL/NEW_USER_PASS/NEW_USER_LAST/NEW_USER_FIRST/NEW_USER_ROLE/NEW_USER_ORG）均为非空且非占位符真实值，全部就绪 | — |
 
 > 【条件豁免规则（当前未触发）】本批 5 任务无外部凭据类变量消费，EXEMPT_RULES 为空。
-> 后续批次 TASKS 扩充后如包含 GH_TOKEN/AGENT_ORBIT_KEY 类占位变量任务，占位守卫
-> 按原机制自动判定豁免并留痕（环境变量传入真实值即解除，无需重新生成编排脚本）。
+> 后续批次 TASKS 扩充后如包含外部凭据占位类变量任务（对应变量须先按 testcase-to-sh
+> §五登记），占位守卫按原机制自动判定豁免并留痕（环境变量传入真实值即解除，
+> 无需重新生成编排脚本）。
 
 ## 七、差异备注（脚本 vs README / 环境）
 
 | # | 差异 | 处理 |
 | --- | --- | --- |
 | 1 | 目录布局为定版布局（脚本集中 `replay_testcase/<编号_用例名>.sh`、公共库 `common/common.sh`），非 spec 的 `sh/<编号_用例名>/` 案例子目录 | 执行入口按实际路径书写；再次迁移布局时重新生成本计划 |
-| 2 | **脚本集合收缩后部分恢复**（2026-11-19 更新）：现役 `replay_testcase/` 为 001~005 五个脚本（005_create-org-manager 于 2026-11-19 按用例 md 重新转换恢复，common.sh 同步沉淀 refs_of_role_after/select_by_keyboard/click_overlay_node/select_option_by_ref）；上版计划的 006~026/099/012_system-logout 等脚本仍不在现役目录（result/ 仅存 002、005 历史日志，均通过）。`data/test-data.sh`（59 变量）与登记表（67 条）保留全量定义，属数据域超集，不影响本批执行 | 任务表按实际扫描的 5 脚本生成；脚本集合变化时重新执行 generate-test-plan.md |
+| 2 | **脚本集合收缩后部分恢复**（2026-11-19 更新）：现役 `replay_testcase/` 为 001~005 五个脚本（005_create-org-manager 于 2026-11-19 按用例 md 重新转换恢复，common.sh 同步沉淀 refs_of_role_after/select_by_keyboard/click_overlay_node/select_option_by_ref）；上版计划的 006~026/099/012_system-logout 等脚本仍不在现役目录（result/ 仅存 002、005 历史日志，均通过）。**数据域已同步裁剪**（2026-11-20）：`data/test-data.sh` 与登记表仅保留 5 脚本关联的 15 个变量（006~099 相关 44 个定义域变量及脚本级 8 条已随登记条目移除） | 任务表按实际扫描的 5 脚本生成；脚本集合变化时重新执行 generate-test-plan.md |
 | 3 | T001 批次创建类数据已于平台落库（上轮 001~005 实跑通过：002/005 日志在 result/ 留存）| 003/004 断言口径为"组织树出现 $ORG_NAME/$SUB_ORG_NAME"——数据已存在时断言可幂等通过（重复创建提交被平台重名校验静默拦截，reload 后树中已有目标节点 → 断言通过）；如需真实创建，换 T002 批次刷新数据后回放 |
 | 4 | README §用例总览/依赖树描述 27 任务时代的脚本集合，与现役 4 脚本不一致 | 以脚本实际内容为准（§2.2 规则）；README 待脚本集合稳定后同步 |
-| 5 | 数据机制为变量规则改造后形态（2026-11-06）：test-data.sh 按登记表"赋值规则"列整体刷新（变量级规则优先、空规则批次兜底），59 定义域变量全部携带 `# 初始值(用例输入):` 注释 | 本计划与 run-all.sh 头部批次号 T001 与 test-data.sh 头部一致；换批次号时先执行 /generate-test-data <批次号> 再重新生成本计划 |
+| 5 | 数据机制为变量规则改造后形态（2026-11-06）：test-data.sh 按登记表"赋值规则"列整体刷新（变量级规则优先、空规则批次兜底），现行 15 定义域变量全部携带 `# 初始值(用例输入):` 注释（2026-11-20 数据域随脚本集裁剪，BASE_URL 现值按登记表 fixed 规则对齐为 dt01） | 本计划与 run-all.sh 头部批次号 T001 与 test-data.sh 头部一致；换批次号时先执行 /generate-test-data <批次号> 再重新生成本计划 |
 
 ## 八、执行记录（执行时填写）
 

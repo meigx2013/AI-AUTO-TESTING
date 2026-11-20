@@ -12,15 +12,15 @@
 #  ASDM_USER/ASDM_PASS，无内置身份切换）；如需覆盖账号以 ASDM_USER/ASDM_PASS
 #  环境变量传入（load 时环境变量优先）。
 # 【编号说明】本批现役脚本 5 个（001~005）；006 及后续编号脚本不在现役
-#  replay_testcase/ 目录（test-data.sh 与登记表仍保留其变量定义，
-#  属数据域超集，不影响本批执行）；脚本集合变化时重新生成本脚本。
+#  replay_testcase/ 目录（test-data.sh 与登记表已于 2026-11-20 同步裁剪，
+#  仅保留本批 5 脚本关联的 15 个变量）；脚本集合变化时重新生成本脚本。
 # 【豁免机制】EXEMPT_RULES 中任务若对应变量为空或含 PLACEHOLDER 占位符特征，
 #  判定为豁免-缺外部数据，跳过执行并留痕（test-plan.md §六）。
 # 【本批状态】BATCH_ID=T001 批次下：5 个任务的必需变量（ASDM_USER/ASDM_PASS/
 #  ORG_NAME/PARENT_ORG/SUB_ORG_NAME/NEW_USER_EMAIL/NEW_USER_PASS/
 #  NEW_USER_LAST/NEW_USER_FIRST/NEW_USER_ROLE/NEW_USER_ORG）均为非空非占位符
 #  真实值 → 本批无豁免任务，
-#  EXEMPT_RULES 为空（保留判定逻辑：后续批次 GH_TOKEN 等占位变量对应任务加入
+#  EXEMPT_RULES 为空（保留判定逻辑：后续批次外部凭据占位类变量对应任务加入
 #  TASKS 后，按 test-plan.md §六 回填规则即可，无需重新生成本脚本）。
 #  另注：T001 批次创建类数据（T001_组织01/组织02）已于上轮回放在平台落库，
 #  003/004 重放按"组织树出现节点"断言口径可幂等通过（详见 test-plan.md §七 差异 2）；
@@ -81,10 +81,10 @@ DEPS=(
 
 # EXEMPT_RULES：<任务slug|变量>（键必须与 TASKS 项一致），变量为空或含占位符特征则豁免
 # 本批（T001）5 个任务必需变量均为非空非占位符真实值 → 无豁免任务，规则集为空；
-# 后续批次如出现占位变量任务（如 GH_TOKEN 类），按 test-plan.md §六 回填
-# "任务slug|变量" 条目即可（重新生成本脚本时需回填此批说明）
+# 后续批次如出现占位变量任务（外部凭据类，须先按 testcase-to-sh §五登记），
+# 按 test-plan.md §六 回填 "任务slug|变量" 条目即可（重新生成本脚本时需回填此批说明）
 EXEMPT_RULES=()
-# 占位符特征（test-data.sh 中豁免变量默认值含此特征，如 GH_TOKEN=ghp_xxx…）
+# 占位符特征（test-data.sh 中豁免变量默认值含此特征，如 ghp_xxx 类占位 Token…）
 PLACEHOLDER="xxx"
 # -------------------------------------------------------
 
